@@ -6,6 +6,13 @@ name = "pypi"
 [packages]
 channels = "*"
 django = "*"
+django-filter = "*"
+django-guardian = "*"
+djangorestframework = "*"
+markdown = "*"
+pygments = "*"
+pyyaml = "*"
+uritemplate = "*"
 
 [dev-packages]
 bandit = "*"
