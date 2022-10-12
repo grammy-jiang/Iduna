@@ -4,11 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+channels = "*"
 django = "*"
 
 [dev-packages]
 bandit = "*"
 black = "*"
+ipython = "*"
 isort = "*"
 mypy = "*"
 pylint = "*"
