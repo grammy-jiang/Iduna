@@ -14,6 +14,7 @@ from .databases import *
 from .debug import *
 from .i18n import *
 from .installed_apps import *
+from .logging import *
 from .middleware import *
 from .password import *
 from .secret_key import *
