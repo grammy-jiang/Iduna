@@ -35,4 +35,4 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-INTERNAL_IPS = []
+INTERNAL_IPS: list[str] = []

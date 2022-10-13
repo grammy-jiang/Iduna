@@ -92,9 +92,9 @@ class Command(BaseCommand):
         for database in settings.DATABASES.values():
             if (
                 database["ENGINE"] == "django.db.backends.sqlite3"
-                and database["NAME"].is_file()
+                and database["NAME"].is_file()  # type: ignore
             ):
-                database["NAME"].unlink()
+                database["NAME"].unlink()  # type: ignore
                 self.stdout.write(
                     self.style.SUCCESS(
                         f"Remove existed sqlite3 database: {database['NAME']}"
