@@ -1,6 +1,10 @@
 [tool.django-stubs]
 django_settings_module = "tests.settings_mypy"
 
+[tool.isort]
+known_django = "django,rest_framework"
+sections = "FUTURE,STDLIB,THIRDPARTY,DJANGO,FIRSTPARTY,LOCALFOLDER"
+
 [tool.mypy]
 plugins = [
     "mypy_django_plugin.main",
