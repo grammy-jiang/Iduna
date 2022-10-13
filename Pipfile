@@ -19,6 +19,7 @@ uritemplate = "*"
 [dev-packages]
 bandit = "*"
 black = "*"
+django-debug-toolbar = "*"
 django-stubs = "*"
 django-stubs-ext = "*"
 djangorestframework-stubs = "*"
