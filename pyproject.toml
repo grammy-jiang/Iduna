@@ -3,7 +3,10 @@ django_settings_module = "tests.settings_mypy"
 
 [tool.isort]
 known_django = "django,rest_framework"
+line_length = 88
+profile = "black"
 sections = "FUTURE,STDLIB,THIRDPARTY,DJANGO,FIRSTPARTY,LOCALFOLDER"
+skip_gitignore = true
 
 [tool.mypy]
 plugins = [
