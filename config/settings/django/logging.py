@@ -1,3 +1,10 @@
+"""
+Django uses and extends Python’s builtin logging module to perform system logging. This
+module is discussed in detail in Python’s own documentation; this section provides a
+quick overview.
+
+* https://docs.djangoproject.com/en/4.1/topics/logging/
+"""
 LOGGING = {
     "version": 1,
     "formatters": {
