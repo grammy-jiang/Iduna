@@ -23,6 +23,9 @@ jobs = 0
 # List of plugins (as comma separated values of python module names) to load,
 # usually to register additional checkers.
 load-plugins = ["pylint_django"]
+
+[tool.pylint."django foreign keys referenced by strings"]
+# A module containing Django settings to be used while linting.
 django-settings-module = "config.settings"
 
 [tool.pylint.reports]
