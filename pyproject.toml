@@ -24,3 +24,9 @@ jobs = 0
 # usually to register additional checkers.
 load-plugins = ["pylint_django"]
 django-settings-module = "config.settings"
+
+[tool.pylint.reports]
+# Set the output format. Available formats are text, parseable, colorized, json
+# and msvs (visual studio). You can also give a reporter class, e.g.
+# mypackage.mymodule.MyReporterClass.
+output-format="colorized"
