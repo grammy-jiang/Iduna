@@ -1,7 +1,11 @@
+[tool.black]
+extend-exclude = [".*/migrations/[0-9]{4}_.*.py"]
+
 [tool.django-stubs]
 django_settings_module = "tests.settings_mypy"
 
 [tool.isort]
+extend_skip_glob = ["**/migrations"]
 known_django = "django,rest_framework"
 line_length = 88
 profile = "black"
