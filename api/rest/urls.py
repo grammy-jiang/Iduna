@@ -7,9 +7,11 @@ simple, quick and consistent way of wiring your view logic to a set of URLs.
 from django.urls import include, path
 from rest_framework import routers
 
+from .group import GroupViewSet
 from .user import UserViewSet
 
 router = routers.DefaultRouter()
+router.register("groups", viewset=GroupViewSet, basename="group")
 router.register("users", viewset=UserViewSet, basename="user")
 
 urlpatterns = [path("", include(router.urls))]
