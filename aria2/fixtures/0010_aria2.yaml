@@ -1,0 +1,4 @@
+- model: aria2.aria2c
+  pk: 1
+  fields:
+    path: /usr/bin/aria2c
