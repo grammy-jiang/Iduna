@@ -3,10 +3,10 @@ The admin of Aria2 model of aria2
 """
 from django.contrib import admin
 
-from aria2.models import Aria2
+from aria2.models import Aria2c
 
 
-@admin.register(Aria2)
+@admin.register(Aria2c)
 class Aria2Admin(admin.ModelAdmin):
     """
     The admin of Aria2 model of aria2
