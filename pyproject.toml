@@ -38,6 +38,13 @@ load-plugins = ["pylint_django"]
 # A module containing Django settings to be used while linting.
 django-settings-module = "config.settings"
 
+[tool.pylint.format]
+# Regexp for a line that is allowed to be longer than the limit.
+ignore-long-lines = "^\\s*([#\\*]\\s)?<?https?://\\S+>?$"
+
+# Maximum number of characters on a single line.
+max-line-length = 88
+
 [tool.pylint.reports]
 # Set the output format. Available formats are text, parseable, colorized, json
 # and msvs (visual studio). You can also give a reporter class, e.g.
