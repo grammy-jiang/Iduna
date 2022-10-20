@@ -6,14 +6,17 @@ import subprocess
 from django.contrib import admin
 
 from ..models import Aria2c, Aria2cInstance
+from .aria2c_instance import Aria2cInstanceMixin
 from .utils import ReadOnlyAdminMixin
 
 
-class Aria2cInstanceInline(admin.TabularInline):
+class Aria2cInstanceInline(Aria2cInstanceMixin, admin.TabularInline):
     """
     The tabular inline of Aria2 Instance
     """
 
+    fields = ("pid", "command", "euser", "cpu", "mem", "etimes", "cputimes")
+    readonly_fields = ("euser", "cpu", "mem", "etimes", "cputimes")
     model = Aria2cInstance
 
 
