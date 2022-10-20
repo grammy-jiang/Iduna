@@ -5,11 +5,12 @@ import subprocess
 
 from django.contrib import admin
 
-from aria2.models import Aria2c
+from ..models import Aria2c
+from .utils import ReadOnlyAdminMixin
 
 
 @admin.register(Aria2c)
-class Aria2Admin(admin.ModelAdmin):
+class Aria2Admin(ReadOnlyAdminMixin, admin.ModelAdmin):
     """
     The admin of Aria2 model of aria2
     """
