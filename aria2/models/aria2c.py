@@ -1,6 +1,7 @@
 """
 The model of Aria2
 """
+import subprocess
 from pathlib import Path
 from typing import Optional, TypeVar
 
@@ -43,3 +44,26 @@ class Aria2c(models.Model):
     """
 
     path = PathField(max_length=256)
+
+    def _get_pids(self) -> tuple[int, ...]:
+        """
+
+        :return:
+        :rtype: tuple[int, ...]
+        """
+        return tuple(
+            int(pid)
+            for pid in subprocess.check_output(["pidof", self.path]).decode().split()
+        )
+
+    def _get_command(self, pid: int) -> str:
+        """
+
+        :param pid:
+        :type pid: int
+        :return:
+        :rtype: str
+        """
+        return subprocess.check_output(
+            ["ps", "-p", str(pid), "-o", "args", "--no-headers"]
+        ).decode()
