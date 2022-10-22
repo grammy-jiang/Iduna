@@ -127,3 +127,11 @@ class Aria2cArgument(models.Model):
 
     class Meta:
         verbose_name = "Aria2c - Argument"
+
+    def __str__(self) -> str:
+        """
+
+        :return:
+        :rtype: str
+        """
+        return self.long_argument

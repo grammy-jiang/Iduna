@@ -7,6 +7,7 @@ from django.contrib import admin
 
 from ..models import Aria2c, Aria2cInstance
 from .aria2c_instance import Aria2cInstanceMixin
+from .aria2c_profile import Aria2cProfile
 from .utils import ReadOnlyAdminMixin
 
 
@@ -20,13 +21,21 @@ class Aria2cInstanceInline(Aria2cInstanceMixin, admin.TabularInline):
     model = Aria2cInstance
 
 
+class Aria2cProfileInline(admin.TabularInline):
+    """
+    The tabular inline of Aria2 Profile Instance
+    """
+
+    model = Aria2cProfile
+
+
 @admin.register(Aria2c)
 class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     """
     The admin of Aria2 model of aria2
     """
 
-    inlines = (Aria2cInstanceInline,)
+    inlines = (Aria2cInstanceInline, Aria2cProfileInline)
 
     fields = ("path", "version")
     list_display = ("path",)
