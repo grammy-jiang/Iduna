@@ -20,6 +20,7 @@ class ArgumentPairInline(admin.TabularInline):
     """
 
     model = ArgumentPair
+    ordering = ("argument",)
 
 
 @admin.register(Aria2cProfile)
