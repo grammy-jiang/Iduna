@@ -43,7 +43,15 @@ class Aria2c(models.Model):
     The model of Aria2
     """
 
-    path = PathField(max_length=256)
+    path = PathField(max_length=256, primary_key=True, unique=True)
+
+    def __str__(self) -> str:
+        """
+
+        :return:
+        :rtype: str
+        """
+        return str(self.path)
 
     def _get_pids(self) -> tuple[int, ...]:
         """
