@@ -15,6 +15,9 @@ class Aria2cProfile(models.Model):
 
     arguments = models.ManyToManyField("Aria2cArgument", through="ArgumentPair")
 
+    class Meta:
+        verbose_name = "Aria2c - Profile"
+
     def __str__(self) -> str:
         """
 
@@ -32,3 +35,6 @@ class ArgumentPair(models.Model):
     profile = models.ForeignKey("Aria2cProfile", on_delete=models.CASCADE)
     argument = models.ForeignKey("Aria2cArgument", on_delete=models.CASCADE)
     value = models.CharField(max_length=256)
+
+    class Meta:
+        verbose_name = "Aria2c - Argument Pair"

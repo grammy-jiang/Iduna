@@ -41,6 +41,9 @@ class Aria2cArgumentTag(models.Model):
 
     value = models.CharField(max_length=256, primary_key=True, unique=True)
 
+    class Meta:
+        verbose_name = "Aria2c - Argument Tag"
+
     def __str__(self) -> str:
         """
 
@@ -121,3 +124,6 @@ class Aria2cArgument(models.Model):
     aria2c = models.ForeignKey("Aria2c", on_delete=models.CASCADE)
 
     objects = Manager.from_queryset(QuerySet)()
+
+    class Meta:
+        verbose_name = "Aria2c - Argument"

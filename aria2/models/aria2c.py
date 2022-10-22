@@ -45,6 +45,10 @@ class Aria2c(models.Model):
 
     path = PathField(max_length=256, primary_key=True)
 
+    class Meta:
+        verbose_name = "Aria2c - Binary"
+        verbose_name_plural = "Aria2c - Binaries"
+
     def __str__(self) -> str:
         """
 

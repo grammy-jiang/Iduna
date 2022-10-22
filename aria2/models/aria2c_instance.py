@@ -47,3 +47,6 @@ class Aria2cInstance(models.Model):
     aria2c = models.ForeignKey("Aria2c", on_delete=models.CASCADE)
 
     objects = Manager.from_queryset(QuerySet)()
+
+    class Meta:
+        verbose_name = "Aria2c - Instance"
