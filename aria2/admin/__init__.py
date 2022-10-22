@@ -2,4 +2,5 @@
 The admins of the models of the application of aria2
 """
 from .aria2c import *
+from .aria2c_argument import *
 from .aria2c_instance import *
