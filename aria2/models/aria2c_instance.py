@@ -41,8 +41,8 @@ class Aria2cInstance(models.Model):
     The model of Aria2 instance
     """
 
-    pid = models.IntegerField()
-    command = models.CharField(max_length=256)
+    pid = models.IntegerField(primary_key=True)
+    command = models.CharField(db_index=True, max_length=256)
 
     aria2c = models.ForeignKey("Aria2c", on_delete=models.CASCADE)
 
