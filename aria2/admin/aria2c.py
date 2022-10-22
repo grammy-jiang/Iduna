@@ -26,9 +26,7 @@ class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     The admin of Aria2 model of aria2
     """
 
-    inlines = [
-        Aria2cInstanceInline,
-    ]
+    inlines = (Aria2cInstanceInline,)
 
     fields = ("path", "version")
     list_display = ("path",)
