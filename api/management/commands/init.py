@@ -13,6 +13,8 @@ from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
+from aria2.models import Aria2c, Aria2cArgument
+
 AppConfig = TypeVar("AppConfig", bound=_AppConfig)
 
 User = get_user_model()
@@ -188,6 +190,20 @@ class Command(BaseCommand):
                     )
                 )
 
+    def _load_arguments(self) -> None:
+        """
+        load arguments
+        :return:
+        :rtype: None
+        """
+        for aria2c in Aria2c.objects.all():
+            arguments = Aria2cArgument.objects.create_from_aria2c(aria2c)
+            self.stdout.write(
+                self.style.SUCCESS(
+                    f"Load [{len(arguments)}] arguments from [{aria2c}]."
+                )
+            )
+
     def handle(self, *args: Any, **options: Any) -> Optional[str]:
         """
 
@@ -214,3 +230,4 @@ class Command(BaseCommand):
         self._create_migration_scripts()
         self._migrate()
         self._load_fixtures()
+        self._load_arguments()
