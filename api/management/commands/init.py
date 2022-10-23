@@ -258,7 +258,7 @@ class Command(BaseCommand):
         self._remove_migration_scripts()
         self._create_migration_scripts()
         self._migrate()
-        self._load_fixtures()
         self._load_aria2c()
         self._load_arguments()
         self._load_instances()
+        self._load_fixtures()
