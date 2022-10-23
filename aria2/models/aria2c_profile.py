@@ -4,6 +4,7 @@ The model of Aria2 Profile
 from __future__ import annotations
 
 from django.db import models
+from django.utils.functional import cached_property
 
 
 class Aria2cProfile(models.Model):
@@ -26,6 +27,16 @@ class Aria2cProfile(models.Model):
         :rtype: str
         """
         return self.name
+
+    def _get_arguments(self) -> str:
+        """
+
+        :return:
+        :rtype: str
+        """
+        return " ".join(
+            argument.arg for argument in ArgumentPair.objects.filter(profile=self)
+        )
 
 
 class ArgumentPair(models.Model):
@@ -51,4 +62,13 @@ class ArgumentPair(models.Model):
         :return:
         :rtype: str
         """
-        return f"{self.argument}={self.value} ({self.profile})"
+        return f"{self.arg} ({self.profile})"
+
+    @cached_property
+    def arg(self) -> str:
+        """
+
+        :return:
+        :rtype: str
+        """
+        return f"{self.argument}={self.value}"
