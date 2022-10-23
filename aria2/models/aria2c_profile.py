@@ -36,9 +36,7 @@ class Aria2cProfile(models.Model):
         :rtype: tuple[str, ...]
         """
         argument: ArgumentPair
-        return tuple(
-            argument.arg for argument in ArgumentPair.objects.filter(profile=self)
-        )
+        return tuple(argument.arg for argument in self.arguments.through.objects.all())
 
     @cached_property
     def command(self) -> tuple[str, ...]:
