@@ -13,6 +13,8 @@ class ArgumentPairAdmin(admin.ModelAdmin):
     The admin of Aria2 Argument Pair model of aria2
     """
 
+    list_display = ("profile", "argument", "value")
+
 
 class ArgumentPairInline(admin.TabularInline):
     """
