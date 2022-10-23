@@ -199,7 +199,7 @@ class Command(BaseCommand):
         aria2cs = Aria2c.objects.create_from_file_system()
         self.stdout.write(
             self.style.SUCCESS(
-                f"Load [{len(aria2cs)}] arguments from the local file system:\n"
+                f"Load [{len(aria2cs)}] binaries from the local file system:\n"
                 f"{pprint.pformat(aria2cs)}"
             )
         )
