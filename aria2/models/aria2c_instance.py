@@ -3,18 +3,27 @@ The model of Aria2 Instance
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from django.db import models
 
-if TYPE_CHECKING:
-    from .aria2c import Aria2c
+from .aria2c import Aria2c
 
 
 class QuerySet(models.QuerySet):
     """
     custom QuerySet to fit aria2c
     """
+
+    def create_from_pid(self, pid: int | str) -> Aria2cInstance:
+        """
+
+        :param pid:
+        :type pid: int | str
+        :return:
+        :rtype: Aria2cInstance
+        """
+        command = Aria2c.get_command(pid)
+        aria2c, _ = Aria2c.objects.get_or_create(path=command.split(maxsplit=1)[0])
+        return self.create(pid=pid, command=command, aria2c=aria2c)
 
     def create_all_from_aria2c(self, aria2c: Aria2c) -> tuple[Aria2cInstance, ...]:
         """
