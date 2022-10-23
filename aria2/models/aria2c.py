@@ -95,10 +95,15 @@ class Aria2c(models.Model):
         :return:
         :rtype: tuple[int, ...]
         """
-        return tuple(
-            int(pid)
-            for pid in subprocess.check_output(["pidof", self.path]).decode().split()
-        )
+        try:
+            return tuple(
+                int(pid)
+                for pid in subprocess.check_output(["pidof", str(self.path)])
+                .decode()
+                .split()
+            )
+        except subprocess.CalledProcessError:
+            return tuple()
 
     def _get_command(self, pid: int) -> str:
         """
