@@ -33,3 +33,5 @@ class Aria2cProfileAdmin(admin.ModelAdmin):
     """
 
     inlines = (ArgumentPairInline,)
+
+    list_display = ("name", "aria2c", "args")
