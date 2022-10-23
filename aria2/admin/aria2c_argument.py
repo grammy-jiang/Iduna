@@ -24,8 +24,20 @@ class Aria2cArgumentTagAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
 
     inlines = (Aria2cArgumentInline,)
 
-    list_display = ("value",)
+    list_display = ("value", "number_of_arguments")
     ordering = ("value",)
+    readonly_fields = ("number_of_arguments",)
+
+    @admin.display()
+    def number_of_arguments(self, obj: Aria2cArgumentTag) -> int:
+        """
+
+        :param obj:
+        :type obj: Aria2cArgumentTag
+        :return:
+        :rtype: int
+        """
+        return obj.aria2cargument_set.count()
 
 
 @admin.register(Aria2cArgument)
