@@ -28,15 +28,26 @@ class Aria2cProfile(models.Model):
         """
         return self.name
 
-    def _get_arguments(self) -> str:
+    @cached_property
+    def args(self) -> tuple[str, ...]:
         """
 
         :return:
-        :rtype: str
+        :rtype: tuple[str, ...]
         """
-        return " ".join(
+        argument: ArgumentPair
+        return tuple(
             argument.arg for argument in ArgumentPair.objects.filter(profile=self)
         )
+
+    @cached_property
+    def command(self) -> tuple[str, ...]:
+        """
+
+        :return:
+        :rtype: tuple[str, ...]
+        """
+        return str(self.aria2c.path), *self.args
 
 
 class ArgumentPair(models.Model):
