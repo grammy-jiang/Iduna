@@ -38,4 +38,17 @@ class ArgumentPair(models.Model):
     value = models.CharField(max_length=256)
 
     class Meta:
+        constraints = (
+            models.UniqueConstraint(
+                fields=("profile", "argument"), name="unique_argument_pair"
+            ),
+        )
         verbose_name = "Aria2c - Argument Pair"
+
+    def __str__(self) -> str:
+        """
+
+        :return:
+        :rtype: str
+        """
+        return f"{self.argument}={self.value} ({self.profile})"
