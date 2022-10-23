@@ -62,10 +62,7 @@ class QuerySet(models.QuerySet):
         return aria2cs
 
 
-class Manager(models.Manager):
-    """
-    custom Manager to fit the local file system
-    """
+Manager = models.Manager.from_queryset(QuerySet)
 
 
 class Aria2c(models.Model):
@@ -75,7 +72,7 @@ class Aria2c(models.Model):
 
     path = PathField(max_length=256, primary_key=True)
 
-    objects = Manager.from_queryset(QuerySet)()
+    objects = Manager()
 
     class Meta:
         verbose_name = "Aria2c - Binary"
@@ -89,7 +86,7 @@ class Aria2c(models.Model):
         """
         return str(self.path)
 
-    def _get_pids(self) -> tuple[int, ...]:
+    def get_pids(self) -> tuple[int, ...]:
         """
 
         :return:
@@ -105,7 +102,8 @@ class Aria2c(models.Model):
         except subprocess.CalledProcessError:
             return tuple()
 
-    def _get_command(self, pid: int) -> str:
+    @staticmethod
+    def get_command(pid: int) -> str:
         """
 
         :param pid:
