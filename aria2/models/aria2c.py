@@ -103,13 +103,13 @@ class Aria2c(models.Model):
             return tuple()
 
     @staticmethod
-    def get_command(pid: int) -> str:
+    def get_command(pid: int | str) -> str:
         """
 
         :param pid:
         :type pid: int
         :return:
-        :rtype: str
+        :rtype: int | str
         """
         return subprocess.check_output(
             ["ps", "-p", str(pid), "-o", "args", "--no-headers"]
