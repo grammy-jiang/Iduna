@@ -50,3 +50,11 @@ class Aria2cInstance(models.Model):
 
     class Meta:
         verbose_name = "Aria2c - Instance"
+
+    def __str__(self) -> str:
+        """
+
+        :return:
+        :rtype: str
+        """
+        return str(self.pid)

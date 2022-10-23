@@ -1,6 +1,8 @@
 """
 The model of Aria2
 """
+from __future__ import annotations
+
 import subprocess
 from pathlib import Path
 from typing import Optional, TypeVar
@@ -38,12 +40,42 @@ class PathField(models.CharField):
         return Path(value)
 
 
+class QuerySet(models.QuerySet):
+    """
+    custom QuerySet to fit the local file system
+    """
+
+    def create_from_file_system(self) -> list[Aria2c]:
+        """
+
+        :return:
+        :rtype: list[Aria2c]
+        """
+        aria2cs: list[Aria2c] = []
+        for path in (
+            subprocess.check_output(["which", "--all", "aria2c"])
+            .decode()
+            .strip()
+            .split("\n")
+        ):
+            aria2cs.append(self.create(path=path))
+        return aria2cs
+
+
+class Manager(models.Manager):
+    """
+    custom Manager to fit the local file system
+    """
+
+
 class Aria2c(models.Model):
     """
     The model of Aria2
     """
 
     path = PathField(max_length=256, primary_key=True)
+
+    objects = Manager.from_queryset(QuerySet)()
 
     class Meta:
         verbose_name = "Aria2c - Binary"
