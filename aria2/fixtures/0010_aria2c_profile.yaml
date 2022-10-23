@@ -1,0 +1,4 @@
+- model: aria2.aria2cprofile
+  pk: default
+  fields:
+    aria2c: /usr/bin/aria2c

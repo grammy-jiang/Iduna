@@ -1,0 +1,18 @@
+- model: aria2.argumentpair
+  pk: 1
+  fields:
+    profile: default
+    argument: --daemon
+    value: 'true'
+- model: aria2.argumentpair
+  pk: 2
+  fields:
+    profile: default
+    argument: --enable-rpc
+    value: 'true'
+- model: aria2.argumentpair
+  pk: 3
+  fields:
+    profile: default
+    argument: --rpc-listen-port
+    value: '56800'
