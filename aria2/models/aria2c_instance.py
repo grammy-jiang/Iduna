@@ -25,15 +25,12 @@ class QuerySet(models.QuerySet):
         :rtype: tuple[Aria2cInstance, ...]
         """
         return tuple(
-            self.create(pid=pid, command=aria2c._get_command(pid), aria2c=aria2c)
-            for pid in aria2c._get_pids()
+            self.create(pid=pid, command=aria2c.get_command(pid), aria2c=aria2c)
+            for pid in aria2c.get_pids()
         )
 
 
-class Manager(models.Manager):
-    """
-    custom Manager to fit aria2c
-    """
+Manager = models.Manager.from_queryset(QuerySet)
 
 
 class Aria2cInstance(models.Model):
@@ -46,7 +43,7 @@ class Aria2cInstance(models.Model):
 
     aria2c = models.ForeignKey("Aria2c", on_delete=models.CASCADE)
 
-    objects = Manager.from_queryset(QuerySet)()
+    objects = Manager()
 
     class Meta:
         verbose_name = "Aria2c - Instance"
