@@ -190,6 +190,20 @@ class Command(BaseCommand):
                     )
                 )
 
+    def _load_aria2c(self) -> None:
+        """
+        load aria2c from the local file system
+        :return:
+        :rtype: None
+        """
+        aria2cs = Aria2c.objects.create_from_file_system()
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Load [{len(aria2cs)}] arguments from the local file system:\n"
+                f"{pprint.pformat(aria2cs)}"
+            )
+        )
+
     def _load_arguments(self) -> None:
         """
         load arguments
@@ -214,7 +228,8 @@ class Command(BaseCommand):
             instances = Aria2cInstance.objects.create_all_from_aria2c(aria2c)
             self.stdout.write(
                 self.style.SUCCESS(
-                    f"Load [{len(instances)}] instances from [{aria2c}]."
+                    f"Load [{len(instances)}] instances from [{aria2c}]:\n"
+                    f"{pprint.pformat(instances)}"
                 )
             )
 
@@ -244,5 +259,6 @@ class Command(BaseCommand):
         self._create_migration_scripts()
         self._migrate()
         self._load_fixtures()
+        self._load_aria2c()
         self._load_arguments()
         self._load_instances()
