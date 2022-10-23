@@ -14,6 +14,7 @@ class ArgumentPairAdmin(admin.ModelAdmin):
     """
 
     list_display = ("profile", "argument", "value")
+    ordering = ("profile", "argument")
 
 
 class ArgumentPairInline(admin.TabularInline):
