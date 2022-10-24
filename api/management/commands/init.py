@@ -36,8 +36,7 @@ def get_local_apps() -> tuple[AppConfig, ...]:
     )
 
 
-ARIA2 = apps.get_app_config("aria2")
-ARIA2_MIGRATIONS = Path(ARIA2.path) / "migrations"
+ARIA2_MIGRATIONS = Path(apps.get_app_config("aria2").path) / "migrations"
 
 SCRIPTS_KEEP: set[Path] = set()
 
