@@ -111,6 +111,10 @@ class Aria2c(models.Model):
         :return:
         :rtype: int | str
         """
-        return subprocess.check_output(
-            ["ps", "-p", str(pid), "-o", "args", "--no-headers"]
-        ).decode()
+        return (
+            subprocess.check_output(
+                ["ps", "-p", str(pid), "-o", "args", "--no-headers"]
+            )
+            .decode()
+            .strip()
+        )
