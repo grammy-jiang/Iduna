@@ -37,10 +37,10 @@ class Aria2cArgumentAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     """
 
     list_display = (
-        "short_argument",
         "long_argument",
-        "description",
+        "short_argument",
         "default",
+        "description",
         "possible_values",
         "aria2c",
     )
