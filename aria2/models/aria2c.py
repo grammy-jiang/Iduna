@@ -11,6 +11,8 @@ from django.db import models
 from django.db.backends.base.base import BaseDatabaseWrapper
 from django.db.models.expressions import Col
 
+from ..exceptions import CommandNotFound
+
 _T = TypeVar("_T", bound=BaseDatabaseWrapper)
 
 
@@ -118,3 +120,16 @@ class Aria2c(models.Model):
             .decode()
             .strip()
         )
+
+    def get_pid(self, command: str) -> int:
+        """
+
+        :param command:
+        :type command: str
+        :return:
+        :rtype: int
+        """
+        for pid in self.get_pids():
+            if command == self.get_command(pid):
+                return pid
+        raise CommandNotFound
