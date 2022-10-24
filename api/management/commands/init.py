@@ -1,6 +1,8 @@
 """
 This command is going to initialize the development environment
 """
+from __future__ import annotations
+
 import pprint
 from functools import cache
 from pathlib import Path
@@ -34,7 +36,10 @@ def get_local_apps() -> tuple[AppConfig, ...]:
     )
 
 
-SCRIPTS_KEEP: tuple[Path, ...] = tuple()
+ARIA2 = apps.get_app_config("aria2")
+ARIA2_MIGRATIONS = Path(ARIA2.path) / "migrations"
+
+SCRIPTS_KEEP: set[Path] = set()
 
 
 def get_migration_scripts(app: AppConfig) -> tuple[Path, ...]:
@@ -113,15 +118,18 @@ class Command(BaseCommand):
             scripts = get_migration_scripts(app)
             if not scripts:
                 continue
+            removed_scripts: list[str] = []
             for script in scripts:
                 if script in SCRIPTS_KEEP:
                     continue
+                removed_scripts.append(str(script))
                 script.unlink()
+
             self.stdout.write(
                 self.style.SUCCESS(
                     f"The migration scripts of the local app [{app.name}] are "
                     f"removed:\n"
-                    f"{pprint.pformat(tuple(str(i) for i in scripts))}"
+                    f"{pprint.pformat(removed_scripts)}"
                 )
             )
 
@@ -137,11 +145,12 @@ class Command(BaseCommand):
             scripts = get_migration_scripts(app)
             if not scripts:
                 continue
+            _scripts = tuple(str(x) for x in set(scripts).difference(SCRIPTS_KEEP))
             self.stdout.write(
                 self.style.SUCCESS(
                     f"The migration scripts of the local app [{app.name}] are "
                     f"created:\n"
-                    f"{pprint.pformat(tuple(str(x) for x in scripts))}"
+                    f"{pprint.pformat(_scripts)}"
                 )
             )
 
