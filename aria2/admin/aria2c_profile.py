@@ -2,9 +2,15 @@
 The admin of Aria2 Profile model of aria2
 """
 
-from django.contrib import admin
+from typing import TypeVar
 
-from ..models import ArgumentPair, Aria2cProfile
+from django.contrib import admin
+from django.http import HttpRequest as _HttpRequest
+from django.http import HttpResponse
+
+from ..models import ArgumentPair, Aria2cInstance, Aria2cProfile
+
+HttpRequest = TypeVar("HttpRequest", bound=_HttpRequest)
 
 
 @admin.register(ArgumentPair)
@@ -32,6 +38,19 @@ class Aria2cProfileAdmin(admin.ModelAdmin):
     The admin of Aria2 Profile model of aria2
     """
 
+    change_form_template = "aria2/admin/change_form.html"
     inlines = (ArgumentPairInline,)
-
     list_display = ("name", "aria2c", "args")
+
+    def response_change(self, request: HttpRequest, obj: Aria2cProfile) -> HttpResponse:
+        """
+
+        :param request:
+        :type request: HttpRequest
+        :param obj:
+        :type obj: Aria2cProfile
+        :return:
+        :rtype: HttpResponse
+        """
+        Aria2cInstance.objects.create_from_profile(obj)
+        return super().response_change(request, obj)
