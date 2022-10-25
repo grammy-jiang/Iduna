@@ -3,6 +3,7 @@ The admin of Aria2 Instance model of aria2
 """
 import subprocess
 from datetime import timedelta
+from typing import Optional
 
 from django.contrib import admin
 
@@ -16,91 +17,108 @@ class Aria2cInstanceMixin:
     """
 
     @admin.display()
-    def euser(self, obj: Aria2cInstance) -> str:
+    def euser(self, obj: Aria2cInstance) -> Optional[str]:
         """
 
         :param obj:
         :type obj: Aria2cInstance
         :return:
-        :rtype: str
+        :rtype: Optional[str]
         """
-        return (
-            subprocess.check_output(
-                ["ps", "-p", str(obj.pid), "-o", "euser", "--no-headers"]
+        try:
+            return (
+                subprocess.check_output(
+                    ["ps", "-p", str(obj.pid), "-o", "euser", "--no-headers"]
+                )
+                .decode()
+                .strip()
             )
-            .decode()
-            .strip()
-        )
+        except subprocess.CalledProcessError:
+            return None
 
     @admin.display()
-    def mem(self, obj: Aria2cInstance) -> str:
+    def mem(self, obj: Aria2cInstance) -> Optional[str]:
         """
 
         :param obj:
         :type obj: Aria2cInstance
         :return:
-        :rtype: str
+        :rtype: Optional[str]
         """
-        return (
-            subprocess.check_output(
-                ["ps", "-p", str(obj.pid), "-o", "%mem", "--no-headers"]
+        try:
+            return (
+                subprocess.check_output(
+                    ["ps", "-p", str(obj.pid), "-o", "%mem", "--no-headers"]
+                )
+                .decode()
+                .strip()
             )
-            .decode()
-            .strip()
-        )
+        except subprocess.CalledProcessError:
+            return None
 
     @admin.display()
-    def etimes(self, obj: Aria2cInstance) -> timedelta:
+    def etimes(self, obj: Aria2cInstance) -> Optional[timedelta]:
         """
         get the running time of the Aria2 Instance
         :param obj:
+        :type obj: Aria2cInstance
         :return:
+        :rtype: Optional[timedelta]
         """
-        return timedelta(
-            seconds=int(
+        try:
+            return timedelta(
+                seconds=int(
+                    subprocess.check_output(
+                        ["ps", "-p", str(obj.pid), "-o", "etimes", "--no-headers"]
+                    )
+                    .decode()
+                    .strip()
+                )
+            )
+        except subprocess.CalledProcessError:
+            return None
+
+    @admin.display()
+    def cpu(self, obj: Aria2cInstance) -> Optional[float]:
+        """
+
+        :param obj:
+        :type obj: Aria2cInstance
+        :return:
+        :rtype: Optional[float]
+        """
+        try:
+            return float(
                 subprocess.check_output(
-                    ["ps", "-p", str(obj.pid), "-o", "etimes", "--no-headers"]
+                    ["ps", "-p", str(obj.pid), "-o", "%cpu", "--no-headers"]
                 )
                 .decode()
                 .strip()
             )
-        )
+        except subprocess.CalledProcessError:
+            return None
 
     @admin.display()
-    def cpu(self, obj: Aria2cInstance) -> float:
+    def cputimes(self, obj: Aria2cInstance) -> Optional[timedelta]:
         """
 
         :param obj:
-        :type obj:
+        :type obj: Aria2cInstance
         :return:
-        :rtype: float
+        :rtype: Optional[timedelta]
         """
-        return float(
-            subprocess.check_output(
-                ["ps", "-p", str(obj.pid), "-o", "%cpu", "--no-headers"]
-            )
-            .decode()
-            .strip()
-        )
-
-    @admin.display()
-    def cputimes(self, obj: Aria2cInstance) -> timedelta:
-        """
-
-        :param obj:
-        :type obj:
-        :return:
-        :rtype: timedelta
-        """
-        return timedelta(
-            seconds=int(
-                subprocess.check_output(
-                    ["ps", "-p", str(obj.pid), "-o", "cputimes", "--no-headers"]
+        try:
+            return timedelta(
+                seconds=int(
+                    subprocess.check_output(
+                        ["ps", "-p", str(obj.pid), "-o", "cputimes", "--no-headers"]
+                    )
+                    .decode()
+                    .strip()
                 )
-                .decode()
-                .strip()
             )
-        )
+        except subprocess.CalledProcessError:
+            return None
 
 
 @admin.register(Aria2cInstance)
