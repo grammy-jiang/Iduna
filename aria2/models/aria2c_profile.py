@@ -19,7 +19,7 @@ class Aria2cProfile(models.Model):
 
     arguments = models.ManyToManyField("Aria2cArgument", through="ArgumentPair")
 
-    args = models.CharField(blank=True, max_length=256, null=True)
+    args = models.CharField(blank=True, max_length=256, null=True, unique=True)
 
     class Meta:
         verbose_name = "Aria2c - Profile"

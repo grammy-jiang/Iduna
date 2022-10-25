@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import subprocess
 from datetime import datetime, timedelta
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Iterable, Optional
 
 from django.apps import apps
 from django.db import models
@@ -69,7 +69,9 @@ class QuerySet(models.QuerySet):
                         if (datetime.now() - start) > timedelta(seconds=30):
                             raise CommandExecutionFailed from exc
                         continue
-                    return self.create(pid=pid, command=command, aria2c=profile.aria2c)
+                    return self.create(
+                        pid=pid, command=command, aria2c=profile.aria2c, profile=profile
+                    )
 
 
 Manager = models.Manager.from_queryset(QuerySet)
@@ -100,3 +102,32 @@ class Aria2cInstance(models.Model):
         :rtype: str
         """
         return str(self.pid)
+
+    def save(
+        self,
+        force_insert: bool = False,
+        force_update: bool = False,
+        using: Optional[str] = None,
+        update_fields: Optional[Iterable[str]] = None,
+    ) -> None:
+        """
+
+        :param force_insert:
+        :type force_insert: bool
+        :param force_update:
+        :type force_update: bool
+        :param using:
+        :type using: Optional[str]
+        :param update_fields:
+        :type update_fields: Optional[Iterable[str]]
+        :return:
+        :rtype: None
+        """
+        Aria2cProfile: TAria2cProfile = apps.get_model(
+            app_label="aria2", model_name="Aria2cProfile"
+        )
+        if not self.profile:
+            self.profile = Aria2cProfile.objects.get(
+                args=self.command.split(maxsplit=1)[-1]
+            )
+        return super().save(force_insert, force_update, using, update_fields)

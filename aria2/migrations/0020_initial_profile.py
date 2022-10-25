@@ -57,7 +57,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "args",
-                    models.CharField(blank=True, max_length=256, null=True),
+                    models.CharField(
+                        blank=True, max_length=256, null=True, unique=True
+                    ),
                 ),
             ],
             options={
