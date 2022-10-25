@@ -116,6 +116,18 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
     The admin of Aria2 Instance model of aria2
     """
 
+    fields = (
+        "profile",
+        "pid",
+        "command",
+        "euser",
+        "cpu",
+        "mem",
+        "etimes",
+        "cputimes",
+        "aria2c",
+        "verbose_version",
+    )
     list_display = (
         "profile",
         "pid",
@@ -126,5 +138,36 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "etimes",
         "cputimes",
         "aria2c",
+        "version",
     )
-    readonly_fields = ("euser", "mem", "etimes", "cputimes", "cpu")
+    readonly_fields = (
+        "euser",
+        "mem",
+        "etimes",
+        "cputimes",
+        "cpu",
+        "version",
+        "verbose_version",
+    )
+
+    @admin.display()
+    def version(self, obj: Aria2cInstance) -> str:
+        """
+
+        :param obj:
+        :type obj: Aria2cInstance
+        :return:
+        :rtype: str
+        """
+        return obj.rpc_server_proxy.aria2.getVersion()["version"]
+
+    @admin.display()
+    def verbose_version(self, obj: Aria2cInstance) -> str:
+        """
+
+        :param obj:
+        :type obj: Aria2cInstance
+        :return:
+        :rtype: str
+        """
+        return obj.rpc_server_proxy.aria2.getVersion()

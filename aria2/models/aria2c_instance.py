@@ -6,14 +6,19 @@ from __future__ import annotations
 import subprocess
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, Iterable, Optional
+from urllib.parse import ParseResult, urlunparse
+from xmlrpc.client import ServerProxy
 
 from django.apps import apps
 from django.db import models
+from django.utils.functional import cached_property
 
 from ..exceptions import CommandExecutionFailed, CommandNotFound
 
 if TYPE_CHECKING:
     from .aria2c import Aria2c as TAria2c
+    from .aria2c_argument import Aria2cArgument as TAria2cArgument
+    from .aria2c_profile import ArgumentPair as TArgumentPair
     from .aria2c_profile import Aria2cProfile as TAria2cProfile
 
 
@@ -131,3 +136,35 @@ class Aria2cInstance(models.Model):
                 args=self.command.split(maxsplit=1)[-1]
             )
         return super().save(force_insert, force_update, using, update_fields)
+
+    @cached_property
+    def rpc_server_address(self) -> str:
+        """
+
+        :return:
+        :rtype: str
+        """
+        Aria2cArgument: TAria2cArgument = apps.get_model(
+            app_label="aria2", model_name="Aria2cArgument"
+        )
+        rpc_listen_port = Aria2cArgument.objects.get(long_argument="--rpc-listen-port")
+        ArgumentPair: TArgumentPair = self.profile.arguments.through
+        port = ArgumentPair.objects.get(argument=rpc_listen_port).value
+        url = ParseResult(
+            scheme="http",
+            netloc=f"localhost:{port}",
+            path="rpc",
+            params="",
+            query="",
+            fragment="",
+        )
+        return urlunparse(url)
+
+    @cached_property
+    def rpc_server_proxy(self) -> ServerProxy:
+        """
+
+        :return:
+        :rtype: ServerProxy
+        """
+        return ServerProxy(self.rpc_server_address)
