@@ -72,7 +72,7 @@ class Aria2c(models.Model):
     The model of Aria2
     """
 
-    path = PathField(max_length=256, primary_key=True)
+    path = PathField(max_length=256)
 
     objects = Manager()
 

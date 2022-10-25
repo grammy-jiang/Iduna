@@ -17,11 +17,15 @@ class Migration(migrations.Migration):
             name="Aria2c",
             fields=[
                 (
-                    "path",
-                    aria2.models.aria2c.PathField(
-                        max_length=256, primary_key=True, serialize=False
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
                     ),
                 ),
+                ("path", aria2.models.aria2c.PathField(max_length=256)),
             ],
             options={
                 "verbose_name": "Aria2c - Binary",
