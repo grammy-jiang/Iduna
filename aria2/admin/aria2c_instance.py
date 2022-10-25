@@ -1,6 +1,7 @@
 """
 The admin of Aria2 Instance model of aria2
 """
+import pprint
 import subprocess
 from datetime import timedelta
 
@@ -127,6 +128,8 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "cputimes",
         "aria2c",
         "verbose_version",
+        "available_methods",
+        "available_notifications",
     )
     list_display = (
         "profile",
@@ -148,6 +151,8 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "cpu",
         "version",
         "verbose_version",
+        "available_methods",
+        "available_notifications",
     )
 
     @admin.display()
@@ -170,4 +175,26 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         :return:
         :rtype: str
         """
-        return obj.rpc_server_proxy.aria2.getVersion()
+        return pprint.pformat(obj.rpc_server_proxy.aria2.getVersion())
+
+    @admin.display()
+    def available_methods(self, obj: Aria2cInstance) -> str:
+        """
+
+        :param obj:
+        :type obj: Aria2cInstance
+        :return:
+        :rtype: str
+        """
+        return pprint.pformat(obj.rpc_server_proxy.system.listMethods())
+
+    @admin.display()
+    def available_notifications(self, obj: Aria2cInstance) -> str:
+        """
+
+        :param obj:
+        :type obj: Aria2cInstance
+        :return:
+        :rtype: str
+        """
+        return pprint.pformat(obj.rpc_server_proxy.system.listNotifications())
