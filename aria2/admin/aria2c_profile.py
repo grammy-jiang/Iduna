@@ -38,7 +38,7 @@ class Aria2cProfileAdmin(admin.ModelAdmin):
     The admin of Aria2 Profile model of aria2
     """
 
-    change_form_template = "aria2/admin/change_form.html"
+    change_form_template = "aria2/admin/change_form_profile.html"
     inlines = (ArgumentPairInline,)
     list_display = ("name", "aria2c", "args")
 
