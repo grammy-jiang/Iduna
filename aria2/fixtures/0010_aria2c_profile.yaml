@@ -2,3 +2,4 @@
   pk: default
   fields:
     aria2c: 1
+    args: --daemon=true --enable-rpc=true --rpc-listen-port=56800
