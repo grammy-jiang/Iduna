@@ -80,20 +80,4 @@ class Migration(migrations.Migration):
                 "verbose_name": "Aria2c - Argument",
             },
         ),
-        migrations.CreateModel(
-            name="Aria2cInstance",
-            fields=[
-                ("pid", models.IntegerField(primary_key=True, serialize=False)),
-                ("command", models.CharField(max_length=256, unique=True)),
-                (
-                    "aria2c",
-                    models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="aria2.aria2c"
-                    ),
-                ),
-            ],
-            options={
-                "verbose_name": "Aria2c - Instance",
-            },
-        ),
     ]

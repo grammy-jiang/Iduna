@@ -84,6 +84,9 @@ class Aria2cInstance(models.Model):
     command = models.CharField(max_length=256, unique=True)
 
     aria2c = models.ForeignKey("Aria2c", on_delete=models.CASCADE)
+    profile = models.OneToOneField(
+        "Aria2cProfile", blank=True, null=True, on_delete=models.CASCADE
+    )
 
     objects = Manager()
 

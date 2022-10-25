@@ -41,6 +41,7 @@ ARIA2_MIGRATIONS = Path(apps.get_app_config("aria2").path) / "migrations"
 SCRIPTS_KEEP: set[Path] = {
     ARIA2_MIGRATIONS / "0010_initial_aria2c.py",
     ARIA2_MIGRATIONS / "0020_initial_profile.py",
+    ARIA2_MIGRATIONS / "0030_initial_instance.py",
 }
 
 
