@@ -16,8 +16,24 @@ class Aria2cInstanceInline(Aria2cInstanceMixin, admin.TabularInline):
     The tabular inline of Aria2 Instance
     """
 
-    fields = ("pid", "command", "euser", "cpu", "mem", "etimes", "cputimes")
-    readonly_fields = ("pid", "command", "euser", "cpu", "mem", "etimes", "cputimes")
+    fields = (
+        "pid",
+        "command",
+        "effective_user_name",
+        "cpu",
+        "mem",
+        "elapsed_time",
+        "cumulative_cpu_times",
+    )
+    readonly_fields = (
+        "pid",
+        "command",
+        "effective_user_name",
+        "cpu",
+        "mem",
+        "elapsed_time",
+        "cumulative_cpu_times",
+    )
     model = Aria2cInstance
 
 
@@ -81,7 +97,14 @@ class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         return subprocess.check_output([obj.path, "--version"]).decode()
 
     @admin.display()
-    def instances(self, obj: Aria2c):
+    def instances(self, obj: Aria2c) -> str:
+        """
+
+        :param obj:
+        :type obj: Aria2c
+        :return:
+        :rtype: str
+        """
         return ", ".join(
             str(instance.pid) for instance in Aria2cInstance.objects.filter(aria2c=obj)
         )

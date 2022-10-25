@@ -16,9 +16,9 @@ class Aria2cInstanceMixin:
     The mixin for the admin of Aria2 Instance
     """
 
-    @admin.display()
+    @admin.display(description="Effective User Name")
     @safe_check_output
-    def euser(self, obj: Aria2cInstance) -> str:
+    def effective_user_name(self, obj: Aria2cInstance) -> str:
         """
 
         :param obj:
@@ -52,9 +52,9 @@ class Aria2cInstanceMixin:
             .strip()
         )
 
-    @admin.display()
+    @admin.display(description="Elapsed Time")
     @safe_check_output
-    def etimes(self, obj: Aria2cInstance) -> timedelta:
+    def elapsed_time(self, obj: Aria2cInstance) -> timedelta:
         """
         get the running time of the Aria2 Instance
         :param obj:
@@ -90,9 +90,9 @@ class Aria2cInstanceMixin:
             .strip()
         )
 
-    @admin.display()
+    @admin.display(description="Cumulative CPU Time")
     @safe_check_output
-    def cputimes(self, obj: Aria2cInstance) -> timedelta:
+    def cumulative_cpu_times(self, obj: Aria2cInstance) -> timedelta:
         """
 
         :param obj:
@@ -121,11 +121,11 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "profile",
         "pid",
         "command",
-        "euser",
+        "effective_user_name",
         "cpu",
         "mem",
-        "etimes",
-        "cputimes",
+        "elapsed_time",
+        "cumulative_cpu_times",
         "aria2c",
         "verbose_version",
         "session_id",
@@ -138,19 +138,19 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "profile",
         "pid",
         "command",
-        "euser",
+        "effective_user_name",
         "cpu",
         "mem",
-        "etimes",
-        "cputimes",
+        "elapsed_time",
+        "cumulative_cpu_times",
         "aria2c",
         "version",
     )
     readonly_fields = (
-        "euser",
+        "effective_user_name",
         "mem",
-        "etimes",
-        "cputimes",
+        "elapsed_time",
+        "cumulative_cpu_times",
         "cpu",
         "version",
         "verbose_version",
