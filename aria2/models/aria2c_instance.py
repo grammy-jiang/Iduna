@@ -163,7 +163,8 @@ class Aria2cInstance(models.Model):
     @cached_property
     def rpc_server_proxy(self) -> ServerProxy:
         """
-
+        find all methods of aria2 rpc methods
+        * https://aria2.github.io/manual/en/html/aria2c.html#methods
         :return:
         :rtype: ServerProxy
         """
