@@ -30,6 +30,17 @@ class Aria2cProfileInline(admin.TabularInline):
     model = Aria2cProfile
     readonly_fields = ("args",)
 
+    @admin.display()
+    def args(self, obj: Aria2cProfile) -> str:
+        """
+
+        :param obj:
+        :type obj: Aria2cProfile
+        :return:
+        :rtype: str
+        """
+        return ", ".join(obj.args)
+
 
 @admin.register(Aria2c)
 class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
