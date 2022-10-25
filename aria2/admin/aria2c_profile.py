@@ -32,6 +32,15 @@ class ArgumentPairInline(admin.TabularInline):
     ordering = ("argument",)
 
 
+class Aria2cInstanceInline(admin.TabularInline):
+    """
+    The inline of Aria2 Instance
+    """
+
+    model = Aria2cInstance
+    readonly_fields = ("pid", "command", "aria2c")
+
+
 @admin.register(Aria2cProfile)
 class Aria2cProfileAdmin(admin.ModelAdmin):
     """
@@ -40,7 +49,7 @@ class Aria2cProfileAdmin(admin.ModelAdmin):
 
     change_form_template = "aria2/admin/change_form_profile.html"
     fields = ("name", "aria2c")
-    inlines = (ArgumentPairInline,)
+    inlines = (ArgumentPairInline, Aria2cInstanceInline)
     list_display = ("name", "aria2c", "args")
 
     def response_change(self, request: HttpRequest, obj: Aria2cProfile) -> HttpResponse:
