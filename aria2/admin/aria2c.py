@@ -17,7 +17,7 @@ class Aria2cInstanceInline(Aria2cInstanceMixin, admin.TabularInline):
     """
 
     fields = ("pid", "command", "euser", "cpu", "mem", "etimes", "cputimes")
-    readonly_fields = ("euser", "cpu", "mem", "etimes", "cputimes")
+    readonly_fields = ("pid", "command", "euser", "cpu", "mem", "etimes", "cputimes")
     model = Aria2cInstance
 
 
@@ -35,9 +35,8 @@ class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     The admin of Aria2 model of aria2
     """
 
-    inlines = (Aria2cInstanceInline, Aria2cProfileInline)
-
     fields = ("path", "verbose_version")
+    inlines = (Aria2cInstanceInline, Aria2cProfileInline)
     list_display = ("path", "version")
     readonly_fields = ("path", "version", "verbose_version")
 
