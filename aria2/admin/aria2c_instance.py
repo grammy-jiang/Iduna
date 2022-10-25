@@ -24,9 +24,13 @@ class Aria2cInstanceMixin:
         :return:
         :rtype: str
         """
-        return subprocess.check_output(
-            ["ps", "-p", str(obj.pid), "-o", "euser", "--no-headers"]
-        ).decode()
+        return (
+            subprocess.check_output(
+                ["ps", "-p", str(obj.pid), "-o", "euser", "--no-headers"]
+            )
+            .decode()
+            .strip()
+        )
 
     @admin.display()
     def mem(self, obj: Aria2cInstance) -> str:
@@ -37,9 +41,13 @@ class Aria2cInstanceMixin:
         :return:
         :rtype: str
         """
-        return subprocess.check_output(
-            ["ps", "-p", str(obj.pid), "-o", "%mem", "--no-headers"]
-        ).decode()
+        return (
+            subprocess.check_output(
+                ["ps", "-p", str(obj.pid), "-o", "%mem", "--no-headers"]
+            )
+            .decode()
+            .strip()
+        )
 
     @admin.display()
     def etimes(self, obj: Aria2cInstance) -> timedelta:
@@ -52,7 +60,9 @@ class Aria2cInstanceMixin:
             seconds=int(
                 subprocess.check_output(
                     ["ps", "-p", str(obj.pid), "-o", "etimes", "--no-headers"]
-                ).decode()
+                )
+                .decode()
+                .strip()
             )
         )
 
@@ -68,7 +78,9 @@ class Aria2cInstanceMixin:
         return float(
             subprocess.check_output(
                 ["ps", "-p", str(obj.pid), "-o", "%cpu", "--no-headers"]
-            ).decode()
+            )
+            .decode()
+            .strip()
         )
 
     @admin.display()
@@ -84,7 +96,9 @@ class Aria2cInstanceMixin:
             seconds=int(
                 subprocess.check_output(
                     ["ps", "-p", str(obj.pid), "-o", "cputimes", "--no-headers"]
-                ).decode()
+                )
+                .decode()
+                .strip()
             )
         )
 
