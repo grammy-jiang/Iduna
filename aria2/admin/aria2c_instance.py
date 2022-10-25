@@ -130,6 +130,7 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "verbose_version",
         "available_methods",
         "available_notifications",
+        "global_options",
     )
     list_display = (
         "profile",
@@ -153,6 +154,7 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "verbose_version",
         "available_methods",
         "available_notifications",
+        "global_options",
     )
 
     @admin.display()
@@ -198,3 +200,14 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         :rtype: str
         """
         return pprint.pformat(obj.rpc_server_proxy.system.listNotifications())
+
+    @admin.display()
+    def global_options(self, obj: Aria2cInstance) -> str:
+        """
+
+        :param obj:
+        :type obj: Aria2cInstance
+        :return:
+        :rtype: str
+        """
+        return pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalOption())
