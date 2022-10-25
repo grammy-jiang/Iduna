@@ -50,8 +50,8 @@ class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
 
     fields = ("path", "verbose_version")
     inlines = (Aria2cInstanceInline, Aria2cProfileInline)
-    list_display = ("path", "version")
-    readonly_fields = ("path", "version", "verbose_version")
+    list_display = ("path", "version", "instances")
+    readonly_fields = ("path", "version", "verbose_version", "instances")
 
     @admin.display()
     def version(self, obj: Aria2c) -> str:
@@ -79,3 +79,9 @@ class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         :rtype: str
         """
         return subprocess.check_output([obj.path, "--version"]).decode()
+
+    @admin.display()
+    def instances(self, obj: Aria2c):
+        return ", ".join(
+            str(instance.pid) for instance in Aria2cInstance.objects.filter(aria2c=obj)
+        )
