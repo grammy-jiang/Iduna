@@ -39,6 +39,7 @@ class Aria2cProfileAdmin(admin.ModelAdmin):
     """
 
     change_form_template = "aria2/admin/change_form_profile.html"
+    fields = ("name", "aria2c")
     inlines = (ArgumentPairInline,)
     list_display = ("name", "aria2c", "args")
 
@@ -52,5 +53,6 @@ class Aria2cProfileAdmin(admin.ModelAdmin):
         :return:
         :rtype: HttpResponse
         """
-        Aria2cInstance.objects.create_from_profile(obj)
+        if "_create-instance" in request.POST:
+            Aria2cInstance.objects.create_from_profile(obj)
         return super().response_change(request, obj)
