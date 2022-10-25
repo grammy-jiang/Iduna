@@ -26,7 +26,9 @@ class Aria2cProfileInline(admin.TabularInline):
     The tabular inline of Aria2 Profile Instance
     """
 
+    fields = ("name", "args")
     model = Aria2cProfile
+    readonly_fields = ("args",)
 
 
 @admin.register(Aria2c)
@@ -53,6 +55,7 @@ class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
             subprocess.check_output([obj.path, "--version"])
             .decode()
             .split("\n", maxsplit=1)[0]
+            .replace("aria2 version ", "")
         )
 
     @admin.display()
