@@ -55,6 +55,10 @@ class Migration(migrations.Migration):
                         on_delete=django.db.models.deletion.CASCADE, to="aria2.aria2c"
                     ),
                 ),
+                (
+                    "args",
+                    models.CharField(blank=True, max_length=256, null=True),
+                ),
             ],
             options={
                 "verbose_name": "Aria2c - Profile",
