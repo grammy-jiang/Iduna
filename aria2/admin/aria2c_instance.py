@@ -117,6 +117,7 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
     """
 
     list_display = (
+        "profile",
         "pid",
         "command",
         "euser",
