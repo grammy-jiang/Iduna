@@ -1,6 +1,25 @@
 """
 The utilities of admin
 """
+import subprocess
+from functools import wraps
+
+
+def safe_check_output(func):
+    """
+    if subprocess.check_output raises CalledProcessError, return None instead
+    :param func:
+    :return:
+    """
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except subprocess.CalledProcessError:
+            return None
+
+    return wrapper
 
 
 class ReadOnlyAdminMixin:
