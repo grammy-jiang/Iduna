@@ -110,57 +110,6 @@ class Aria2cInstanceMixin:
             )
         )
 
-
-@admin.register(Aria2cInstance)
-class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAdmin):
-    """
-    The admin of Aria2 Instance model of aria2
-    """
-
-    fields = (
-        "profile",
-        "pid",
-        "command",
-        "effective_user_name",
-        "cpu",
-        "mem",
-        "elapsed_time",
-        "cumulative_cpu_times",
-        "aria2c",
-        "verbose_version",
-        "session_id",
-        "global_statistics",
-        "available_methods",
-        "available_notifications",
-        "global_options",
-    )
-    list_display = (
-        "profile",
-        "pid",
-        "command",
-        "effective_user_name",
-        "cpu",
-        "mem",
-        "elapsed_time",
-        "cumulative_cpu_times",
-        "aria2c",
-        "version",
-    )
-    readonly_fields = (
-        "effective_user_name",
-        "mem",
-        "elapsed_time",
-        "cumulative_cpu_times",
-        "cpu",
-        "version",
-        "verbose_version",
-        "available_methods",
-        "available_notifications",
-        "global_options",
-        "global_statistics",
-        "session_id",
-    )
-
     @admin.display()
     def version(self, obj: Aria2cInstance) -> str:
         """
@@ -237,3 +186,54 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         :rtype: str
         """
         return pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalOption())
+
+
+@admin.register(Aria2cInstance)
+class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAdmin):
+    """
+    The admin of Aria2 Instance model of aria2
+    """
+
+    fields = (
+        "profile",
+        "pid",
+        "command",
+        "effective_user_name",
+        "cpu",
+        "mem",
+        "elapsed_time",
+        "cumulative_cpu_times",
+        "aria2c",
+        "verbose_version",
+        "session_id",
+        "global_statistics",
+        "available_methods",
+        "available_notifications",
+        "global_options",
+    )
+    list_display = (
+        "profile",
+        "pid",
+        "command",
+        "effective_user_name",
+        "cpu",
+        "mem",
+        "elapsed_time",
+        "cumulative_cpu_times",
+        "aria2c",
+        "version",
+    )
+    readonly_fields = (
+        "effective_user_name",
+        "mem",
+        "elapsed_time",
+        "cumulative_cpu_times",
+        "cpu",
+        "version",
+        "verbose_version",
+        "session_id",
+        "global_statistics",
+        "available_methods",
+        "available_notifications",
+        "global_options",
+    )
