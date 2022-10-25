@@ -131,6 +131,8 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "available_methods",
         "available_notifications",
         "global_options",
+        "global_statistics",
+        "session_id",
     )
     list_display = (
         "profile",
@@ -155,6 +157,8 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "available_methods",
         "available_notifications",
         "global_options",
+        "global_statistics",
+        "session_id",
     )
 
     @admin.display()
@@ -211,3 +215,25 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         :rtype: str
         """
         return pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalOption())
+
+    @admin.display()
+    def global_statistics(self, obj: Aria2cInstance) -> str:
+        """
+
+        :param obj:
+        :type obj: Aria2cInstance
+        :return:
+        :rtype: str
+        """
+        return pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalStat())
+
+    @admin.display()
+    def session_id(self, obj: Aria2cInstance) -> str:
+        """
+
+        :param obj:
+        :type obj: Aria2cInstance
+        :return:
+        :rtype: str
+        """
+        return obj.rpc_server_proxy.aria2.getSessionInfo()["sessionId"]
