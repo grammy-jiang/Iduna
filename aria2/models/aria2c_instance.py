@@ -190,3 +190,67 @@ class Aria2cInstance(models.Model):
         :rtype: ServerProxy
         """
         return ServerProxy(self.rpc_server_address)
+
+    @property
+    def cpu(self) -> float:
+        """
+
+        :return:
+        :rtype: float
+        """
+        return float(
+            subprocess.check_output(
+                ["ps", "-p", str(self.pid), "-o", "%cpu", "--no-headers"]
+            )
+            .decode()
+            .strip()
+        )
+
+    @property
+    def mem(self) -> str:
+        """
+
+        :return:
+        :rtype: str
+        """
+        return (
+            subprocess.check_output(
+                ["ps", "-p", str(self.pid), "-o", "%mem", "--no-headers"]
+            )
+            .decode()
+            .strip()
+        )
+
+    @property
+    def elapsed_time(self) -> timedelta:
+        """
+
+        :return:
+        :rtype: timedelta
+        """
+        return timedelta(
+            seconds=int(
+                subprocess.check_output(
+                    ["ps", "-p", str(self.pid), "-o", "etimes", "--no-headers"]
+                )
+                .decode()
+                .strip()
+            )
+        )
+
+    @property
+    def cumulative_cpu_times(self) -> timedelta:
+        """
+
+        :return:
+        :rtype: timedelta
+        """
+        return timedelta(
+            seconds=int(
+                subprocess.check_output(
+                    ["ps", "-p", str(self.pid), "-o", "cputimes", "--no-headers"]
+                )
+                .decode()
+                .strip()
+            )
+        )
