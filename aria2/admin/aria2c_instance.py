@@ -16,24 +16,6 @@ class Aria2cInstanceMixin:
     The mixin for the admin of Aria2 Instance
     """
 
-    @admin.display(description="Effective User Name")
-    @safe_check_output
-    def effective_user_name(self, obj: Aria2cInstance) -> str:
-        """
-
-        :param obj:
-        :type obj: Aria2cInstance
-        :return:
-        :rtype: str
-        """
-        return (
-            subprocess.check_output(
-                ["ps", "-p", str(obj.pid), "-o", "euser", "--no-headers"]
-            )
-            .decode()
-            .strip()
-        )
-
     @admin.display()
     @safe_check_output
     def mem(self, obj: Aria2cInstance) -> str:
@@ -109,39 +91,6 @@ class Aria2cInstanceMixin:
                 .strip()
             )
         )
-
-    @admin.display()
-    def version(self, obj: Aria2cInstance) -> str:
-        """
-
-        :param obj:
-        :type obj: Aria2cInstance
-        :return:
-        :rtype: str
-        """
-        return obj.rpc_server_proxy.aria2.getVersion()["version"]
-
-    @admin.display()
-    def verbose_version(self, obj: Aria2cInstance) -> str:
-        """
-
-        :param obj:
-        :type obj: Aria2cInstance
-        :return:
-        :rtype: str
-        """
-        return pprint.pformat(obj.rpc_server_proxy.aria2.getVersion())
-
-    @admin.display()
-    def session_id(self, obj: Aria2cInstance) -> str:
-        """
-
-        :param obj:
-        :type obj: Aria2cInstance
-        :return:
-        :rtype: str
-        """
-        return obj.rpc_server_proxy.aria2.getSessionInfo()["sessionId"]
 
     @admin.display()
     def global_statistics(self, obj: Aria2cInstance) -> str:

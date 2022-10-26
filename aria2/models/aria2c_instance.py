@@ -3,6 +3,7 @@ The model of Aria2 Instance
 """
 from __future__ import annotations
 
+import pprint
 import subprocess
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, Iterable, Optional
@@ -95,6 +96,10 @@ class Aria2cInstance(models.Model):
         "Aria2cProfile", blank=True, null=True, on_delete=models.CASCADE
     )
 
+    effective_user_name = models.CharField(blank=True, max_length=256, null=True)
+    version = models.CharField(blank=True, max_length=256, null=True)
+    verbose_version = models.CharField(blank=True, max_length=1024, null=True)
+    session_id = models.CharField(blank=True, max_length=256, null=True)
     objects = Manager()
 
     class Meta:
@@ -135,6 +140,22 @@ class Aria2cInstance(models.Model):
             self.profile = Aria2cProfile.objects.get(
                 args=self.command.split(maxsplit=1)[-1]
             )
+        if not self.effective_user_name:
+            self.effective_user_name = (
+                subprocess.check_output(
+                    ["ps", "-p", str(self.pid), "-o", "euser", "--no-headers"]
+                )
+                .decode()
+                .strip()
+            )
+        if not self.version:
+            self.version = self.rpc_server_proxy.aria2.getVersion()["version"]
+        if not self.verbose_version:
+            self.verbose_version = pprint.pformat(
+                self.rpc_server_proxy.aria2.getVersion()
+            )
+        if not self.session_id:
+            self.session_id = self.rpc_server_proxy.aria2.getSessionInfo()["sessionId"]
         return super().save(force_insert, force_update, using, update_fields)
 
     @cached_property
