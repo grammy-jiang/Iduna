@@ -6,7 +6,7 @@ from __future__ import annotations
 import pprint
 import subprocess
 from datetime import datetime, timedelta
-from typing import TYPE_CHECKING, Iterable, Optional
+from typing import TYPE_CHECKING, Any, Iterable, Optional
 from urllib.parse import ParseResult, urlunparse
 from xmlrpc.client import ServerProxy
 
@@ -112,6 +112,21 @@ class Aria2cInstance(models.Model):
         :rtype: str
         """
         return str(self.pid)
+
+    def delete(
+        self, using: Any = None, keep_parents: bool = False
+    ) -> tuple[int, dict[str, int]]:
+        """
+
+        :param using:
+        :type using: Any
+        :param keep_parents:
+        :type keep_parents: bool
+        :return:
+        :rtype: tuple[int, dict[str, int]]
+        """
+        self.rpc_server_proxy.aria2.shutdown()
+        return super().delete(using, keep_parents)
 
     def save(
         self,

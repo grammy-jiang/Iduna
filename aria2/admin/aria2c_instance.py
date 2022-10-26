@@ -2,13 +2,11 @@
 The admin of Aria2 Instance model of aria2
 """
 import pprint
-import subprocess
-from datetime import timedelta
 
 from django.contrib import admin
 
 from ..models import Aria2cInstance
-from .utils import ReadOnlyAdminMixin, safe_check_output
+from .utils import ReadOnlyAdminMixin
 
 
 class Aria2cInstanceMixin:
@@ -110,3 +108,15 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "available_notifications",
         "global_options",
     )
+
+    def has_delete_permission(self, request, obj=None) -> bool:
+        """
+
+        :param request:
+        :type request:
+        :param obj:
+        :type obj:
+        :return:
+        :rtype: bool
+        """
+        return True

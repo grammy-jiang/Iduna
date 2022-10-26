@@ -37,8 +37,16 @@ class Aria2cInstanceInline(admin.TabularInline):
     The inline of Aria2 Instance
     """
 
+    exclude = ("verbose_version",)
     model = Aria2cInstance
-    readonly_fields = ("pid", "command", "aria2c")
+    readonly_fields = (
+        "pid",
+        "command",
+        "aria2c",
+        "effective_user_name",
+        "version",
+        "session_id",
+    )
 
 
 @admin.register(Aria2cProfile)
