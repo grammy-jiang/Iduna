@@ -5,7 +5,7 @@ import pprint
 
 from django.contrib import admin
 
-from ..models import Aria2cInstance
+from ..models import Aria2cGID, Aria2cInstance
 from .utils import ReadOnlyAdminMixin
 
 
@@ -59,6 +59,14 @@ class Aria2cInstanceMixin:
         return pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalOption())
 
 
+class Aria2cGIDInline(admin.TabularInline):
+    """
+    the inline of Aria2cGID
+    """
+
+    model = Aria2cGID
+
+
 @admin.register(Aria2cInstance)
 class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAdmin):
     """
@@ -82,6 +90,7 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "available_notifications",
         "global_options",
     )
+    inlines = (Aria2cGIDInline,)
     list_display = (
         "profile",
         "pid",
