@@ -35,6 +35,22 @@ class Migration(migrations.Migration):
                         to="aria2.aria2cprofile",
                     ),
                 ),
+                (
+                    "effective_user_name",
+                    models.CharField(blank=True, max_length=256, null=True),
+                ),
+                (
+                    "session_id",
+                    models.CharField(blank=True, max_length=256, null=True),
+                ),
+                (
+                    "verbose_version",
+                    models.CharField(blank=True, max_length=1024, null=True),
+                ),
+                (
+                    "version",
+                    models.CharField(blank=True, max_length=256, null=True),
+                ),
             ],
             options={
                 "verbose_name": "Aria2c - Instance",
