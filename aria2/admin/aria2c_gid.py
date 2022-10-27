@@ -51,13 +51,13 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
     )
 
     @admin.display()
-    def completed_percentage(self, obj: Aria2cGID) -> float:
+    def completed_percentage(self, obj: Aria2cGID) -> Optional[float]:
         """
 
         :param obj:
         :type obj: Aria2cGID
         :return:
-        :rtype: float
+        :rtype: Optional[float]
         """
         try:
             return round(int(obj.completed_length) / int(obj.total_length), 2)
