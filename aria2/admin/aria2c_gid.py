@@ -20,32 +20,35 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
     fields = (
         "gid",
         "uris",
+        "options",
+        "position",
         "status",
-        "verbose_status",
-        "total_length",
-        "completed_length",
-        "dir",
         "completed_percentage",
+        "completed_length",
+        "total_length",
+        "dir",
+        "verbose_status",
+        "instance",
     )
     list_display = (
         "gid",
         "uris",
         "status",
-        "total_length",
-        "completed_length",
-        "dir",
         "completed_percentage",
+        "completed_length",
+        "total_length",
+        "dir",
     )
-    # readonly_fields = (
-    #     "gid",
-    #     "uris",
-    #     "status",
-    #     "verbose_status",
-    #     "total_length",
-    #     "completed_length",
-    #     "dir",
-    #     "completed_percentage",
-    # )
+    readonly_fields = (
+        "gid",
+        "status",
+        "completed_percentage",
+        "completed_length",
+        "total_length",
+        "dir",
+        "verbose_status",
+        "instance",
+    )
 
     @admin.display()
     def completed_percentage(self, obj: Aria2cGID) -> float:
@@ -56,7 +59,10 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
         :return:
         :rtype: float
         """
-        return round(int(obj.completed_length) / int(obj.total_length), 2)
+        try:
+            return round(int(obj.completed_length) / int(obj.total_length), 2)
+        except ZeroDivisionError:
+            return None
 
     def has_change_permission(
         self, request: HttpRequest, obj: Optional[Aria2cGID] = None

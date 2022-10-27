@@ -20,6 +20,8 @@ class Aria2cGID(models.Model):
     gid = models.CharField(blank=True, max_length=16, null=True)
 
     uris = models.JSONField()
+    options = models.JSONField(blank=True, null=True)
+    position = models.PositiveIntegerField(blank=True, null=True)
 
     instance = models.ForeignKey("Aria2cInstance", on_delete=models.CASCADE)
 
@@ -56,6 +58,7 @@ class Aria2cGID(models.Model):
         """
         if self.gid:
             return None
+        super().save(force_insert, force_update, using, update_fields)
         self.gid = self.instance.rpc_server_proxy.aria2.addUri(self.uris)
         return super().save(force_insert, force_update, using, update_fields)
 
