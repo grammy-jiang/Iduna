@@ -11,8 +11,10 @@ from typing import Any, Iterable, Optional
 
 from django.db import models
 
+from .utils import TimeStampMixin
 
-class Aria2cGID(models.Model):
+
+class Aria2cGID(TimeStampMixin):
     """
     The model of Aria2 GID
     """

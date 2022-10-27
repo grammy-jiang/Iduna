@@ -47,7 +47,6 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
         "total_length",
         "dir",
         "verbose_status",
-        "instance",
     )
 
     @admin.display()
