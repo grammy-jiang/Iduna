@@ -29,6 +29,8 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
         "dir",
         "verbose_status",
         "instance",
+        "updated_at",
+        "created_at",
     )
     list_display = (
         "gid",
@@ -38,6 +40,8 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
         "completed_length",
         "total_length",
         "dir",
+        "updated_at",
+        "created_at",
     )
     readonly_fields = (
         "gid",
@@ -47,6 +51,8 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
         "total_length",
         "dir",
         "verbose_status",
+        "created_at",
+        "updated_at",
     )
 
     @admin.display()
