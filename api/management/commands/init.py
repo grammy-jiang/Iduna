@@ -45,40 +45,6 @@ SCRIPTS_KEEP: set[Path] = {
 }
 
 
-def get_migration_scripts(app: AppConfig) -> tuple[Path, ...]:
-    """
-
-    :param app:
-    :type app: AppConfig
-    :return:
-    :rtype: tuple[Path, ...]
-    """
-    migrations = Path(app.path) / "migrations"
-    if not migrations.is_dir():
-        raise NotADirectoryError
-    return tuple(
-        script
-        for script in migrations.iterdir()
-        if script.is_file() and script.stem != "__init__" and script.suffix == ".py"
-    )
-
-
-def get_fixtures(app: AppConfig) -> list[Path]:
-    """
-
-    :param app:
-    :type app: AppConfig
-    :return:
-    :rtype: list[Path]
-    """
-    fixtures = Path(app.path) / "fixtures"
-    if not fixtures.is_dir():
-        raise NotADirectoryError
-    return sorted(
-        fixture for fixture in fixtures.iterdir() if fixture.suffix in {".yaml", ".yml"}
-    )
-
-
 class Command(BaseCommand):
     """
     initialize the development environment
@@ -118,11 +84,8 @@ class Command(BaseCommand):
         :rtype: None
         """
         for app in get_local_apps():
-            scripts = get_migration_scripts(app)
-            if not scripts:
-                continue
             removed_scripts: list[str] = []
-            for script in scripts:
+            for script in app.migration_scripts:
                 if script in SCRIPTS_KEEP:
                     continue
                 removed_scripts.append(str(script))
@@ -145,15 +108,14 @@ class Command(BaseCommand):
         self.stdout.write(self.style.NOTICE("Run command makemigrations"))
         call_command("makemigrations")
         for app in get_local_apps():
-            scripts = get_migration_scripts(app)
-            if not scripts:
-                continue
-            _scripts = tuple(str(x) for x in set(scripts).difference(SCRIPTS_KEEP))
+            scripts = tuple(
+                str(x) for x in set(app.migration_scripts).difference(SCRIPTS_KEEP)
+            )
             self.stdout.write(
                 self.style.SUCCESS(
                     f"The migration scripts of the local app [{app.name}] are "
                     f"created:\n"
-                    f"{pprint.pformat(_scripts)}"
+                    f"{pprint.pformat(scripts)}"
                 )
             )
 
@@ -176,28 +138,20 @@ class Command(BaseCommand):
         :rtype: None
         """
         for app in get_local_apps():
-            try:
-                fixtures = get_fixtures(app)
-            except NotADirectoryError:
-                continue
-
-            if not fixtures:
-                continue
-
             self.stdout.write(
                 self.style.NOTICE(
                     f"The fixtures of the local app [{app.name}] are found:\n"
-                    f"{pprint.pformat(tuple(str(x) for x in fixtures))}"
+                    f"{pprint.pformat(tuple(str(x) for x in app.fixtures))}"
                 )
             )
 
             self.stdout.write(self.style.NOTICE("Start to load fixtures."))
 
-            for i, fixture in enumerate(fixtures, start=1):
+            for i, fixture in enumerate(app.fixtures, start=1):
                 call_command("loaddata", fixture)
                 self.stdout.write(
                     self.style.SUCCESS(
-                        f"[{i}/{len(fixtures)}] "
+                        f"[{i}/{len(app.fixtures)}] "
                         f"Fixture is successfully loaded: {fixture}"
                     )
                 )
@@ -274,4 +228,3 @@ class Command(BaseCommand):
         self._load_arguments()
         self._load_fixtures()
         self._load_instances()
-        self._load_fixtures()
