@@ -101,10 +101,7 @@ class QuerySet(models.QuerySet):
         return arguments
 
 
-class Manager(models.Manager):
-    """
-    custom Manager to fit Aria2 Argument
-    """
+Manager = models.Manager.from_queryset(QuerySet)
 
 
 class Aria2cArgument(models.Model):
@@ -123,7 +120,7 @@ class Aria2cArgument(models.Model):
 
     aria2c = models.ForeignKey("Aria2c", on_delete=models.CASCADE)
 
-    objects = Manager.from_queryset(QuerySet)()
+    objects = Manager()
 
     class Meta:
         verbose_name = "Aria2c - Argument"
