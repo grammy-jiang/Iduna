@@ -20,6 +20,23 @@ class Aria2cInstanceMixin:
     """
 
     @admin.display()
+    def verbose_version(self, obj: Aria2cInstance) -> Optional[str]:
+        """
+
+        :param obj:
+        :type obj: Aria2cInstance
+        :return:
+        :rtype: Optional[str]
+        """
+        try:
+            return format_html(
+                "<pre>{}</pre>",
+                pprint.pformat(obj.rpc_server_proxy.aria2.getVersion()),
+            )
+        except ConnectionRefusedError as exc:
+            logger.exception(exc)
+
+    @admin.display()
     def global_statistics(self, obj: Aria2cInstance) -> Optional[str]:
         """
 
