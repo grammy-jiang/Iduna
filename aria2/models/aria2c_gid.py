@@ -6,12 +6,19 @@ characters, thus [0-9a-fA-F] are allowed and leading zeros must not be stripped.
 all 0 is reserved and must not be used. The GID must be unique, otherwise error is
 reported and the download is not added.
 """
-import pprint
-from typing import Any, Iterable, Optional
+from __future__ import annotations
 
+import pprint
+from typing import TYPE_CHECKING, Any, Iterable, Optional
+
+from django.apps import apps
+from django.conf import settings
 from django.db import models
 
 from .utils import TimeStampMixin
+
+if TYPE_CHECKING:
+    from .aria2c_instance import Aria2cInstance
 
 
 class Aria2cGID(TimeStampMixin):
@@ -119,6 +126,16 @@ class Aria2cGID(TimeStampMixin):
         return self._verbose_status["dir"]
 
 
+def get_default_instance() -> Aria2cInstance:
+    """
+
+    :return:
+    :rtype: Aria2cInstance
+    """
+    Aria2cInstance = apps.get_model("aria2", "Aria2cInstance")
+    return Aria2cInstance.objects.get(profile__name=settings.ARIA2_DEFAULT_INSTANCE)
+
+
 class Aria2cGIDUri(TimeStampMixin):
     """
     The model of Aria2 GID URI
@@ -127,6 +144,9 @@ class Aria2cGIDUri(TimeStampMixin):
 
     gid = models.OneToOneField(
         "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
+    )
+    instance = models.ForeignKey(
+        "Aria2cInstance", default=get_default_instance, on_delete=models.CASCADE
     )
 
     uris = models.JSONField()
@@ -146,6 +166,9 @@ class Aria2cGIDTorrent(TimeStampMixin):
     gid = models.OneToOneField(
         "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
     )
+    instance = models.ForeignKey(
+        "Aria2cInstance", default=get_default_instance, on_delete=models.CASCADE
+    )
 
     torrent = models.TextField()
     uris = models.JSONField()
@@ -164,6 +187,9 @@ class Aria2cGIDMetaLink(TimeStampMixin):
 
     gid = models.OneToOneField(
         "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
+    )
+    instance = models.ForeignKey(
+        "Aria2cInstance", default=get_default_instance, on_delete=models.CASCADE
     )
 
     metalink = models.TextField()
