@@ -3,6 +3,7 @@ The model of Aria2 Instance
 """
 from __future__ import annotations
 
+import logging
 import pprint
 import subprocess
 from datetime import datetime, timedelta
@@ -23,6 +24,9 @@ if TYPE_CHECKING:
     from .aria2c_profile import Aria2cProfile as TAria2cProfile
 
 
+logger = logging.getLogger(__name__)
+
+
 class QuerySet(models.QuerySet):
     """
     custom QuerySet to fit aria2c
@@ -36,7 +40,7 @@ class QuerySet(models.QuerySet):
         :return:
         :rtype: Aria2cInstance
         """
-        Aria2c: TAria2c = apps.get_model(app_label="aria2", model_name="Aria2c")
+        Aria2c: TAria2c = apps.get_model("aria2", "Aria2c")
         command = Aria2c.get_command(pid)
         aria2c, _ = Aria2c.objects.get_or_create(path=command.split(maxsplit=1)[0])
         return self.create(pid=pid, command=command, aria2c=aria2c)
@@ -125,7 +129,10 @@ class Aria2cInstance(models.Model):
         :return:
         :rtype: tuple[int, dict[str, int]]
         """
-        self.rpc_server_proxy.aria2.shutdown()
+        try:
+            self.rpc_server_proxy.aria2.shutdown()
+        except ConnectionRefusedError as exc:
+            logger.exception(exc)
         return super().delete(using, keep_parents)
 
     def save(
@@ -148,9 +155,7 @@ class Aria2cInstance(models.Model):
         :return:
         :rtype: None
         """
-        Aria2cProfile: TAria2cProfile = apps.get_model(
-            app_label="aria2", model_name="Aria2cProfile"
-        )
+        Aria2cProfile: TAria2cProfile = apps.get_model("aria2", "Aria2cProfile")
         if not self.profile:
             self.profile = Aria2cProfile.objects.get(
                 args=self.command.split(maxsplit=1)[-1]
@@ -180,9 +185,7 @@ class Aria2cInstance(models.Model):
         :return:
         :rtype: str
         """
-        Aria2cArgument: TAria2cArgument = apps.get_model(
-            app_label="aria2", model_name="Aria2cArgument"
-        )
+        Aria2cArgument: TAria2cArgument = apps.get_model("aria2", "Aria2cArgument")
         rpc_listen_port = Aria2cArgument.objects.get(long_argument="--rpc-listen-port")
         ArgumentPair: TArgumentPair = self.profile.arguments.through
         port = ArgumentPair.objects.get(argument=rpc_listen_port).value
@@ -207,65 +210,77 @@ class Aria2cInstance(models.Model):
         return ServerProxy(self.rpc_server_address)
 
     @property
-    def cpu(self) -> float:
+    def cpu(self) -> Optional[float]:
         """
 
         :return:
-        :rtype: float
+        :rtype: Optional[float]
         """
-        return float(
-            subprocess.check_output(
-                ["ps", "-p", str(self.pid), "-o", "%cpu", "--no-headers"]
-            )
-            .decode()
-            .strip()
-        )
-
-    @property
-    def mem(self) -> str:
-        """
-
-        :return:
-        :rtype: str
-        """
-        return (
-            subprocess.check_output(
-                ["ps", "-p", str(self.pid), "-o", "%mem", "--no-headers"]
-            )
-            .decode()
-            .strip()
-        )
-
-    @property
-    def elapsed_time(self) -> timedelta:
-        """
-
-        :return:
-        :rtype: timedelta
-        """
-        return timedelta(
-            seconds=int(
+        try:
+            return float(
                 subprocess.check_output(
-                    ["ps", "-p", str(self.pid), "-o", "etimes", "--no-headers"]
+                    ["ps", "-p", str(self.pid), "-o", "%cpu", "--no-headers"]
                 )
                 .decode()
                 .strip()
             )
-        )
+        except subprocess.CalledProcessError as exc:
+            logger.exception(exc)
 
     @property
-    def cumulative_cpu_times(self) -> timedelta:
+    def mem(self) -> Optional[str]:
         """
 
         :return:
-        :rtype: timedelta
+        :rtype: Optional[str]
         """
-        return timedelta(
-            seconds=int(
+        try:
+            return (
                 subprocess.check_output(
-                    ["ps", "-p", str(self.pid), "-o", "cputimes", "--no-headers"]
+                    ["ps", "-p", str(self.pid), "-o", "%mem", "--no-headers"]
                 )
                 .decode()
                 .strip()
             )
-        )
+        except subprocess.CalledProcessError as exc:
+            logger.exception(exc)
+
+    @property
+    def elapsed_time(self) -> Optional[timedelta]:
+        """
+
+        :return:
+        :rtype: Optional[timedelta]
+        """
+        try:
+            return timedelta(
+                seconds=int(
+                    subprocess.check_output(
+                        ["ps", "-p", str(self.pid), "-o", "etimes", "--no-headers"]
+                    )
+                    .decode()
+                    .strip()
+                )
+            )
+        except subprocess.CalledProcessError as exc:
+            logger.exception(exc)
+
+    @property
+    def cumulative_cpu_times(self) -> Optional[timedelta]:
+        """
+
+        :return:
+        :rtype: Optional[timedelta]
+        """
+        try:
+            return timedelta(
+                seconds=int(
+                    subprocess.check_output(
+                        ["ps", "-p", str(self.pid), "-o", "cputimes", "--no-headers"]
+                    )
+                    .decode()
+                    .strip()
+                )
+            )
+        except subprocess.CalledProcessError as exc:
+            logger.exception(exc)

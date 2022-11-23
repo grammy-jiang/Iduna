@@ -1,12 +1,16 @@
 """
 The admin of Aria2 Instance model of aria2
 """
+import logging
 import pprint
+from typing import Optional
 
 from django.contrib import admin
 
 from ..models import Aria2cGID, Aria2cInstance
 from .utils import ReadOnlyAdminMixin
+
+logger = logging.getLogger(__name__)
 
 
 class Aria2cInstanceMixin:
@@ -15,48 +19,60 @@ class Aria2cInstanceMixin:
     """
 
     @admin.display()
-    def global_statistics(self, obj: Aria2cInstance) -> str:
+    def global_statistics(self, obj: Aria2cInstance) -> Optional[str]:
         """
 
         :param obj:
         :type obj: Aria2cInstance
         :return:
-        :rtype: str
+        :rtype: Optional[str]
         """
-        return pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalStat())
+        try:
+            return pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalStat())
+        except ConnectionRefusedError as exc:
+            logger.exception(exc)
 
     @admin.display()
-    def available_methods(self, obj: Aria2cInstance) -> str:
+    def available_methods(self, obj: Aria2cInstance) -> Optional[str]:
         """
 
         :param obj:
         :type obj: Aria2cInstance
         :return:
-        :rtype: str
+        :rtype: Optional[str]
         """
-        return pprint.pformat(obj.rpc_server_proxy.system.listMethods())
+        try:
+            return pprint.pformat(obj.rpc_server_proxy.system.listMethods())
+        except ConnectionRefusedError as exc:
+            logger.exception(exc)
 
     @admin.display()
-    def available_notifications(self, obj: Aria2cInstance) -> str:
+    def available_notifications(self, obj: Aria2cInstance) -> Optional[str]:
         """
 
         :param obj:
         :type obj: Aria2cInstance
         :return:
-        :rtype: str
+        :rtype: Optional[str]
         """
-        return pprint.pformat(obj.rpc_server_proxy.system.listNotifications())
+        try:
+            return pprint.pformat(obj.rpc_server_proxy.system.listNotifications())
+        except ConnectionRefusedError as exc:
+            logger.exception(exc)
 
     @admin.display()
-    def global_options(self, obj: Aria2cInstance) -> str:
+    def global_options(self, obj: Aria2cInstance) -> Optional[str]:
         """
 
         :param obj:
         :type obj: Aria2cInstance
         :return:
-        :rtype: str
+        :rtype: Optional[str]
         """
-        return pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalOption())
+        try:
+            return pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalOption())
+        except ConnectionRefusedError as exc:
+            logger.exception(exc)
 
 
 class Aria2cGIDInline(admin.TabularInline):
