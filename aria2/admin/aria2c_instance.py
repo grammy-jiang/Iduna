@@ -6,6 +6,7 @@ import pprint
 from typing import Optional
 
 from django.contrib import admin
+from django.utils.html import format_html
 
 from ..models import Aria2cGID, Aria2cInstance
 from .utils import ReadOnlyAdminMixin
@@ -28,7 +29,10 @@ class Aria2cInstanceMixin:
         :rtype: Optional[str]
         """
         try:
-            return pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalStat())
+            return format_html(
+                "<pre>{}</pre>",
+                pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalStat()),
+            )
         except ConnectionRefusedError as exc:
             logger.exception(exc)
 
@@ -42,7 +46,10 @@ class Aria2cInstanceMixin:
         :rtype: Optional[str]
         """
         try:
-            return pprint.pformat(obj.rpc_server_proxy.system.listMethods())
+            return format_html(
+                "<pre>{}</pre>",
+                pprint.pformat(obj.rpc_server_proxy.system.listMethods()),
+            )
         except ConnectionRefusedError as exc:
             logger.exception(exc)
 
@@ -56,7 +63,10 @@ class Aria2cInstanceMixin:
         :rtype: Optional[str]
         """
         try:
-            return pprint.pformat(obj.rpc_server_proxy.system.listNotifications())
+            return format_html(
+                "<pre>{}</pre>",
+                pprint.pformat(obj.rpc_server_proxy.system.listNotifications()),
+            )
         except ConnectionRefusedError as exc:
             logger.exception(exc)
 
@@ -70,7 +80,10 @@ class Aria2cInstanceMixin:
         :rtype: Optional[str]
         """
         try:
-            return pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalOption())
+            return format_html(
+                "<pre>{}</pre>",
+                pprint.pformat(obj.rpc_server_proxy.aria2.getGlobalOption()),
+            )
         except ConnectionRefusedError as exc:
             logger.exception(exc)
 
