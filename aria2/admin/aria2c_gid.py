@@ -91,6 +91,20 @@ class Aria2cGIDUriAdmin(admin.ModelAdmin):
     list_display = ("gid", "uris", "options", "position")
     readonly_fields = ("gid",)
 
+    def has_change_permission(
+        self, request: HttpRequest, obj: Optional[Aria2cGIDUri] = None
+    ) -> bool:
+        """
+
+        :param request:
+        :type request: HttpRequest
+        :param obj:
+        :type obj: Optional[Aria2cGIDUri]
+        :return:
+        :rtype: bool
+        """
+        return False
+
     def response_change(self, request: HttpRequest, obj: Aria2cGIDUri) -> HttpResponse:
         """
 
@@ -101,7 +115,7 @@ class Aria2cGIDUriAdmin(admin.ModelAdmin):
         :return:
         :rtype: HttpResponse
         """
-        if "_create-gid" in request.POST:
+        if "_create-gid" in request.POST and not obj.gid:
             obj.create_gid()
         return super().response_change(request, obj)
 
@@ -116,6 +130,20 @@ class Aria2cGIDTorrentAdmin(admin.ModelAdmin):
     list_display = ("gid", "torrent", "uris", "options", "position")
     readonly_fields = ("gid",)
 
+    def has_change_permission(
+        self, request: HttpRequest, obj: Optional[Aria2cGIDUri] = None
+    ) -> bool:
+        """
+
+        :param request:
+        :type request: HttpRequest
+        :param obj:
+        :type obj: Optional[Aria2cGIDUri]
+        :return:
+        :rtype: bool
+        """
+        return False
+
     def response_change(
         self, request: HttpRequest, obj: Aria2cGIDTorrent
     ) -> HttpResponse:
@@ -128,8 +156,8 @@ class Aria2cGIDTorrentAdmin(admin.ModelAdmin):
         :return:
         :rtype: HttpResponse
         """
-        if "_create-gid" in request.POST:
-            pass
+        if "_create-gid" in request.POST and not obj.gid:
+            obj.create_gid()
         return super().response_change(request, obj)
 
 
@@ -143,6 +171,20 @@ class Aria2cGIDMetaLinkAdmin(admin.ModelAdmin):
     list_display = ("gid", "metalink", "options", "position")
     readonly_fields = ("gid",)
 
+    def has_change_permission(
+        self, request: HttpRequest, obj: Optional[Aria2cGIDUri] = None
+    ) -> bool:
+        """
+
+        :param request:
+        :type request: HttpRequest
+        :param obj:
+        :type obj: Optional[Aria2cGIDUri]
+        :return:
+        :rtype: bool
+        """
+        return False
+
     def response_change(
         self, request: HttpRequest, obj: Aria2cGIDMetaLink
     ) -> HttpResponse:
@@ -155,6 +197,6 @@ class Aria2cGIDMetaLinkAdmin(admin.ModelAdmin):
         :return:
         :rtype: HttpResponse
         """
-        if "_create-gid" in request.POST:
-            pass
+        if "_create-gid" in request.POST and not obj.gid:
+            obj.create_gid()
         return super().response_change(request, obj)
