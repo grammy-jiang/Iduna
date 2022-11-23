@@ -117,3 +117,58 @@ class Aria2cGID(TimeStampMixin):
         :rtype: str
         """
         return self._verbose_status["dir"]
+
+
+class Aria2cGIDUri(TimeStampMixin):
+    """
+    The model of Aria2 GID URI
+    * https://aria2.github.io/manual/en/html/aria2c.html#aria2.addUri
+    """
+
+    gid = models.OneToOneField(
+        "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
+    )
+
+    uris = models.JSONField()
+    options = models.JSONField(blank=True, null=True)
+    position = models.PositiveIntegerField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Aria2c - GID - Uri"
+
+
+class Aria2cGIDTorrent(TimeStampMixin):
+    """
+    The model of Aria2 GID Torrent
+    * https://aria2.github.io/manual/en/html/aria2c.html#aria2.addTorrent
+    """
+
+    gid = models.OneToOneField(
+        "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
+    )
+
+    torrent = models.TextField()
+    uris = models.JSONField()
+    options = models.JSONField(blank=True, null=True)
+    position = models.PositiveIntegerField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Aria2c - GID - Torrent"
+
+
+class Aria2cGIDMetaLink(TimeStampMixin):
+    """
+    The model of Aria2 GID MetaLink
+    * https://aria2.github.io/manual/en/html/aria2c.html#aria2.addMetalink
+    """
+
+    gid = models.OneToOneField(
+        "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
+    )
+
+    metalink = models.TextField()
+    options = models.JSONField(blank=True, null=True)
+    position = models.PositiveIntegerField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Aria2c - GID - MetaLink"

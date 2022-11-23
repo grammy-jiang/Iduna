@@ -5,8 +5,9 @@ from typing import Optional, TypeVar
 
 from django.contrib import admin
 from django.http import HttpRequest as _HttpRequest
+from django.http import HttpResponse
 
-from ..models import Aria2cGID
+from ..models import Aria2cGID, Aria2cGIDMetaLink, Aria2cGIDTorrent, Aria2cGIDUri
 
 HttpRequest = TypeVar("HttpRequest", bound=_HttpRequest)
 
@@ -82,3 +83,82 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
         :rtype: bool
         """
         return False
+
+
+@admin.register(Aria2cGIDUri)
+class Aria2cGIDUriAdmin(admin.ModelAdmin):
+    """
+    The admin of Aria2 GID Uri model of aria2
+    """
+
+    change_form_template = "aria2/admin/change_form_gid.html"
+    list_display = ("gid", "uris", "options", "position")
+    readonly_fields = ("gid",)
+
+    def response_change(self, request: HttpRequest, obj: Aria2cGIDUri) -> HttpResponse:
+        """
+
+        :param request:
+        :type request: HttpRequest
+        :param obj:
+        :type obj: Aria2cGIDUri
+        :return:
+        :rtype: HttpResponse
+        """
+        if "_create-gid" in request.POST:
+            pass
+        return super().response_change(request, obj)
+
+
+@admin.register(Aria2cGIDTorrent)
+class Aria2cGIDTorrentAdmin(admin.ModelAdmin):
+    """
+    The admin of Aria2 GID Torrent model of aria2
+    """
+
+    change_form_template = "aria2/admin/change_form_gid.html"
+    list_display = ("gid", "torrent", "uris", "options", "position")
+    readonly_fields = ("gid",)
+
+    def response_change(
+        self, request: HttpRequest, obj: Aria2cGIDTorrent
+    ) -> HttpResponse:
+        """
+
+        :param request:
+        :type request: HttpRequest
+        :param obj:
+        :type obj: Aria2cGIDTorrent
+        :return:
+        :rtype: HttpResponse
+        """
+        if "_create-gid" in request.POST:
+            pass
+        return super().response_change(request, obj)
+
+
+@admin.register(Aria2cGIDMetaLink)
+class Aria2cGIDMetaLinkAdmin(admin.ModelAdmin):
+    """
+    The admin of Aria2 GID MetaLink model of aria2
+    """
+
+    change_form_template = "aria2/admin/change_form_gid.html"
+    list_display = ("gid", "metalink", "options", "position")
+    readonly_fields = ("gid",)
+
+    def response_change(
+        self, request: HttpRequest, obj: Aria2cGIDMetaLink
+    ) -> HttpResponse:
+        """
+
+        :param request:
+        :type request: HttpRequest
+        :param obj:
+        :type obj: Aria2cGIDMetaLink
+        :return:
+        :rtype: HttpResponse
+        """
+        if "_create-gid" in request.POST:
+            pass
+        return super().response_change(request, obj)
