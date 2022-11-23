@@ -20,9 +20,6 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
 
     fields = (
         "gid",
-        "uris",
-        "options",
-        "position",
         "status",
         "completed_percentage",
         "completed_length",
@@ -35,7 +32,6 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
     )
     list_display = (
         "gid",
-        "uris",
         "status",
         "completed_percentage",
         "completed_length",
@@ -106,7 +102,7 @@ class Aria2cGIDUriAdmin(admin.ModelAdmin):
         :rtype: HttpResponse
         """
         if "_create-gid" in request.POST:
-            pass
+            obj.create_gid()
         return super().response_change(request, obj)
 
 

@@ -9,7 +9,7 @@ reported and the download is not added.
 from __future__ import annotations
 
 import pprint
-from typing import TYPE_CHECKING, Any, Iterable, Optional
+from typing import TYPE_CHECKING, Any
 
 from django.apps import apps
 from django.conf import settings
@@ -27,11 +27,6 @@ class Aria2cGID(TimeStampMixin):
     """
 
     gid = models.CharField(blank=True, max_length=16, null=True)
-
-    uris = models.JSONField()
-    options = models.JSONField(blank=True, null=True)
-    position = models.PositiveIntegerField(blank=True, null=True)
-
     instance = models.ForeignKey("Aria2cInstance", on_delete=models.CASCADE)
 
     class Meta:
@@ -43,33 +38,7 @@ class Aria2cGID(TimeStampMixin):
         :return:
         :rtype: str
         """
-        return pprint.pformat(self.uris)
-
-    def save(
-        self,
-        force_insert: bool = False,
-        force_update: bool = False,
-        using: Optional[str] = None,
-        update_fields: Optional[Iterable[str]] = None,
-    ) -> None:
-        """
-
-        :param force_insert:
-        :type force_insert: bool
-        :param force_update:
-        :type force_update: bool
-        :param using:
-        :type using: Optional[str]
-        :param update_fields:
-        :type update_fields: Optional[Iterable[str]]
-        :return:
-        :rtype: None
-        """
-        if self.gid:
-            return None
-        super().save(force_insert, force_update, using, update_fields)
-        self.gid = self.instance.rpc_server_proxy.aria2.addUri(self.uris)
-        return super().save(force_insert, force_update, using, update_fields)
+        return pprint.pformat(self.gid)
 
     @property
     def status(self) -> str:
@@ -136,65 +105,104 @@ def get_default_instance() -> Aria2cInstance:
     return Aria2cInstance.objects.get(profile__name=settings.ARIA2_DEFAULT_INSTANCE)
 
 
-class Aria2cGIDUri(TimeStampMixin):
+class AbstractAria2cGIDTask(TimeStampMixin):
+    """
+    The abstract model of Aria2 GID task
+    """
+
+    gid = models.OneToOneField(
+        "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
+    )
+    instance = models.ForeignKey(
+        "Aria2cInstance", default=get_default_instance, on_delete=models.CASCADE
+    )
+
+    options = models.JSONField(blank=True, null=True)
+    position = models.PositiveIntegerField(blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
+    def _get_args(self) -> list:
+        """
+
+        :return:
+        :rtype: list
+        """
+        args = [self.options if self.options else {}]
+        if self.position:
+            args.append(self.position)
+        return args
+
+    def create_gid(self) -> None:
+        """
+
+        :return:
+        :rtype: None
+        """
+        self.gid = Aria2cGID.objects.create(
+            gid=self.instance.rpc_server_proxy.aria2.addUri(*self._get_args()),
+            instance=self.instance,
+        )
+        return self.save()
+
+
+class Aria2cGIDUri(AbstractAria2cGIDTask):
     """
     The model of Aria2 GID URI
     * https://aria2.github.io/manual/en/html/aria2c.html#aria2.addUri
     """
 
-    gid = models.OneToOneField(
-        "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
-    )
-    instance = models.ForeignKey(
-        "Aria2cInstance", default=get_default_instance, on_delete=models.CASCADE
-    )
-
     uris = models.JSONField()
-    options = models.JSONField(blank=True, null=True)
-    position = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Aria2c - GID - Uri"
 
+    def _get_args(self) -> list:
+        """
 
-class Aria2cGIDTorrent(TimeStampMixin):
+        :return:
+        :rtype: list
+        """
+        return [self.uris, *super()._get_args()]
+
+
+class Aria2cGIDTorrent(AbstractAria2cGIDTask):
     """
     The model of Aria2 GID Torrent
     * https://aria2.github.io/manual/en/html/aria2c.html#aria2.addTorrent
     """
 
-    gid = models.OneToOneField(
-        "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
-    )
-    instance = models.ForeignKey(
-        "Aria2cInstance", default=get_default_instance, on_delete=models.CASCADE
-    )
-
     torrent = models.TextField()
     uris = models.JSONField()
-    options = models.JSONField(blank=True, null=True)
-    position = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Aria2c - GID - Torrent"
 
+    def _get_args(self) -> list:
+        """
 
-class Aria2cGIDMetaLink(TimeStampMixin):
+        :return:
+        :rtype: list
+        """
+        return [self.torrent, self.uris if self.uris else {}, *super()._get_args()]
+
+
+class Aria2cGIDMetaLink(AbstractAria2cGIDTask):
     """
     The model of Aria2 GID MetaLink
     * https://aria2.github.io/manual/en/html/aria2c.html#aria2.addMetalink
     """
 
-    gid = models.OneToOneField(
-        "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
-    )
-    instance = models.ForeignKey(
-        "Aria2cInstance", default=get_default_instance, on_delete=models.CASCADE
-    )
-
     metalink = models.TextField()
-    options = models.JSONField(blank=True, null=True)
-    position = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Aria2c - GID - MetaLink"
+
+    def _get_args(self) -> list:
+        """
+
+        :return:
+        :rtype: list
+        """
+        return [self.metalink, *super()._get_args()]
