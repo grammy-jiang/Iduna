@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="Aria2cArgument",
+            name="Argument",
             fields=[
                 (
                     "short_argument",

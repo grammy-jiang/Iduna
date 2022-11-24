@@ -17,7 +17,7 @@ from django.utils.functional import cached_property
 from ..exceptions import CommandExecutionFailed, CommandNotFound
 
 if TYPE_CHECKING:
-    from .argument import Aria2cArgument as TAria2cArgument
+    from .argument import Argument as TArgument
     from .aria2c_profile import ArgumentPair as TArgumentPair
     from .aria2c_profile import Aria2cProfile as TAria2cProfile
     from .binary import Binary as TBinary
@@ -171,8 +171,8 @@ class Aria2cInstance(models.Model):
         :return:
         :rtype: str
         """
-        Aria2cArgument: TAria2cArgument = apps.get_model("aria2", "Aria2cArgument")
-        rpc_listen_port = Aria2cArgument.objects.get(long_argument="--rpc-listen-port")
+        Argument: TArgument = apps.get_model("aria2", "Argument")
+        rpc_listen_port = Argument.objects.get(long_argument="--rpc-listen-port")
         ArgumentPair: TArgumentPair = self.profile.arguments.through
         port = ArgumentPair.objects.get(argument=rpc_listen_port).value
         url = ParseResult(

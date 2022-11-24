@@ -55,7 +55,7 @@ class QuerySet(models.QuerySet):
 
         Aria2cArgumentTag: TAria2cArgumentTag = apps.get_model("aria2", "ArgumentTag")
 
-        argument: Aria2cArgument = None
+        argument: Argument = None
         line: str
         for line in filter(
             None,
@@ -90,7 +90,7 @@ class QuerySet(models.QuerySet):
 Manager = models.Manager.from_queryset(QuerySet)
 
 
-class Aria2cArgument(models.Model):
+class Argument(models.Model):
     """
     the model of Aria2 Argument
     """

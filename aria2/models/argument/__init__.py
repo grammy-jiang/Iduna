@@ -1,2 +1,2 @@
-from .argument import Aria2cArgument
+from .argument import Argument
 from .tag import ArgumentTag

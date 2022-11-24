@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                     "argument",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="aria2.aria2cargument",
+                        to="aria2.argument",
                     ),
                 ),
             ],
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 (
                     "arguments",
                     models.ManyToManyField(
-                        through="aria2.ArgumentPair", to="aria2.aria2cargument"
+                        through="aria2.ArgumentPair", to="aria2.argument"
                     ),
                 ),
                 (
