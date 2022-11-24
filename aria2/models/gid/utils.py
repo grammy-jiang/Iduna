@@ -19,7 +19,7 @@ from ..utils import TimeStampMixin
 from . import Aria2cGID
 
 if TYPE_CHECKING:
-    from ..aria2c_instance import Aria2cInstance as TAria2cInstance
+    from ..instance import Aria2cInstance as TAria2cInstance
 
 logger = logging.getLogger(__name__)
 

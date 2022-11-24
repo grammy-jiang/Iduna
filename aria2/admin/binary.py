@@ -7,7 +7,7 @@ import subprocess
 from django.contrib import admin
 
 from ..models import Aria2cInstance, Binary
-from .aria2c_instance import Aria2cInstanceMixin
+from .instance import Aria2cInstanceMixin
 from .profile import Profile
 from .utils import ReadOnlyAdminMixin
 
