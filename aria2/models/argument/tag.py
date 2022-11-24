@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Aria2cArgumentTag(models.Model):
+class ArgumentTag(models.Model):
     """
     The model of Aria2 Argument Tag
     """

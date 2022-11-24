@@ -5,13 +5,13 @@ import logging
 
 from django.contrib import admin
 
-from ..models import Aria2cArgument, Aria2cArgumentTag
+from ..models import ArgumentTag, Aria2cArgument
 from .utils import ReadOnlyAdminMixin
 
 logger = logging.getLogger(__name__)
 
 
-@admin.register(Aria2cArgumentTag)
+@admin.register(ArgumentTag)
 class Aria2cArgumentTagAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     """
     The admin of Aria2 Argument Tag model of aria2
@@ -22,11 +22,11 @@ class Aria2cArgumentTagAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     readonly_fields = ("number_of_arguments",)
 
     @admin.display()
-    def number_of_arguments(self, obj: Aria2cArgumentTag) -> int:
+    def number_of_arguments(self, obj: ArgumentTag) -> int:
         """
 
         :param obj:
-        :type obj: Aria2cArgumentTag
+        :type obj: ArgumentTag
         :return:
         :rtype: int
         """

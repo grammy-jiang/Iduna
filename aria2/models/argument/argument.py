@@ -13,7 +13,7 @@ from django.db import models
 
 if TYPE_CHECKING:
     from ..binary import Binary
-    from .tag import Aria2cArgumentTag as TAria2cArgumentTag
+    from .tag import ArgumentTag as TAria2cArgumentTag
 
 logger = logging.getLogger(__name__)
 
@@ -53,9 +53,7 @@ class QuerySet(models.QuerySet):
         """
         self.filter(aria2c=aria2c).delete()
 
-        Aria2cArgumentTag: TAria2cArgumentTag = apps.get_model(
-            "aria2", "Aria2cArgumentTag"
-        )
+        Aria2cArgumentTag: TAria2cArgumentTag = apps.get_model("aria2", "ArgumentTag")
 
         argument: Aria2cArgument = None
         line: str
@@ -104,7 +102,7 @@ class Aria2cArgument(models.Model):
     description = models.CharField(max_length=256)
     possible_values = models.CharField(blank=True, max_length=256, null=True)
     default = models.CharField(blank=True, max_length=256, null=True)
-    tags = models.ManyToManyField("Aria2cArgumentTag")
+    tags = models.ManyToManyField("ArgumentTag")
 
     aria2c = models.ForeignKey("Binary", on_delete=models.CASCADE)
 

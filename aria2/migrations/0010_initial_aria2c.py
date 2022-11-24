@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="Aria2cArgumentTag",
+            name="ArgumentTag",
             fields=[
                 (
                     "value",
@@ -73,7 +73,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "tags",
-                    models.ManyToManyField(to="aria2.aria2cargumenttag"),
+                    models.ManyToManyField(to="aria2.argumenttag"),
                 ),
             ],
             options={
