@@ -8,12 +8,12 @@ import logging
 
 from django.db import models
 
-from .utils import AbstractAria2cGIDTask
+from .utils import AbstractGIDTask
 
 logger = logging.getLogger(__name__)
 
 
-class Aria2cGIDMetaLink(AbstractAria2cGIDTask):
+class GIDMetaLink(AbstractGIDTask):
     """
     This method adds a Metalink download by uploading a ".metalink" file. metalink is a
     base64-encoded string which contains the contents of the ".metalink" file.

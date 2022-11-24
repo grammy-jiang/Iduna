@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.http import HttpRequest as _HttpRequest
 from django.http import HttpResponse
 
-from ..models import GID, Aria2cGIDMetaLink, Aria2cGIDTorrent, Aria2cGIDUri
+from ..models import GID, GIDMetaLink, GIDTorrent, GIDUri
 
 HttpRequest = TypeVar("HttpRequest", bound=_HttpRequest)
 
@@ -84,7 +84,7 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
         return False
 
 
-@admin.register(Aria2cGIDUri)
+@admin.register(GIDUri)
 class Aria2cGIDUriAdmin(admin.ModelAdmin):
     """
     The admin of Aria2 GID Uri model of aria2
@@ -94,13 +94,13 @@ class Aria2cGIDUriAdmin(admin.ModelAdmin):
     list_display = ("gid", "uris", "options", "position")
     readonly_fields = ("gid",)
 
-    def response_change(self, request: HttpRequest, obj: Aria2cGIDUri) -> HttpResponse:
+    def response_change(self, request: HttpRequest, obj: GIDUri) -> HttpResponse:
         """
 
         :param request:
         :type request: HttpRequest
         :param obj:
-        :type obj: Aria2cGIDUri
+        :type obj: GIDUri
         :return:
         :rtype: HttpResponse
         """
@@ -109,7 +109,7 @@ class Aria2cGIDUriAdmin(admin.ModelAdmin):
         return super().response_change(request, obj)
 
 
-@admin.register(Aria2cGIDTorrent)
+@admin.register(GIDTorrent)
 class Aria2cGIDTorrentAdmin(admin.ModelAdmin):
     """
     The admin of Aria2 GID Torrent model of aria2
@@ -119,15 +119,13 @@ class Aria2cGIDTorrentAdmin(admin.ModelAdmin):
     list_display = ("gid", "torrent", "uris", "options", "position")
     readonly_fields = ("gid",)
 
-    def response_change(
-        self, request: HttpRequest, obj: Aria2cGIDTorrent
-    ) -> HttpResponse:
+    def response_change(self, request: HttpRequest, obj: GIDTorrent) -> HttpResponse:
         """
 
         :param request:
         :type request: HttpRequest
         :param obj:
-        :type obj: Aria2cGIDTorrent
+        :type obj: GIDTorrent
         :return:
         :rtype: HttpResponse
         """
@@ -136,7 +134,7 @@ class Aria2cGIDTorrentAdmin(admin.ModelAdmin):
         return super().response_change(request, obj)
 
 
-@admin.register(Aria2cGIDMetaLink)
+@admin.register(GIDMetaLink)
 class Aria2cGIDMetaLinkAdmin(admin.ModelAdmin):
     """
     The admin of Aria2 GID MetaLink model of aria2
@@ -146,15 +144,13 @@ class Aria2cGIDMetaLinkAdmin(admin.ModelAdmin):
     list_display = ("gid", "metalink", "options", "position")
     readonly_fields = ("gid",)
 
-    def response_change(
-        self, request: HttpRequest, obj: Aria2cGIDMetaLink
-    ) -> HttpResponse:
+    def response_change(self, request: HttpRequest, obj: GIDMetaLink) -> HttpResponse:
         """
 
         :param request:
         :type request: HttpRequest
         :param obj:
-        :type obj: Aria2cGIDMetaLink
+        :type obj: GIDMetaLink
         :return:
         :rtype: HttpResponse
         """

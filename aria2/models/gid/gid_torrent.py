@@ -8,12 +8,12 @@ import logging
 
 from django.db import models
 
-from .utils import AbstractAria2cGIDTask
+from .utils import AbstractGIDTask
 
 logger = logging.getLogger(__name__)
 
 
-class Aria2cGIDTorrent(AbstractAria2cGIDTask):
+class GIDTorrent(AbstractGIDTask):
     """
     This method adds a BitTorrent download by uploading a ".torrent" file. If you want
     to add a BitTorrent Magnet URI, use the aria2.addUri() method instead. torrent must

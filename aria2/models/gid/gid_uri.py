@@ -8,12 +8,12 @@ import logging
 
 from django.db import models
 
-from .utils import AbstractAria2cGIDTask
+from .utils import AbstractGIDTask
 
 logger = logging.getLogger(__name__)
 
 
-class Aria2cGIDUri(AbstractAria2cGIDTask):
+class GIDUri(AbstractGIDTask):
     """
     This method adds a new download. uris is an array of HTTP/FTP/SFTP/BitTorrent URIs
     (strings) pointing to the same resource. If you mix URIs pointing to different

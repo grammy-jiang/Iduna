@@ -34,7 +34,7 @@ def get_default_instance() -> TInstance:
     return Instance.objects.get(profile__name=settings.ARIA2_DEFAULT_INSTANCE)
 
 
-class AbstractAria2cGIDTask(TimeStampMixin):
+class AbstractGIDTask(TimeStampMixin):
     """
     The abstract model of Aria2 GID task
     """
