@@ -8,7 +8,7 @@ from typing import Optional
 from django.contrib import admin
 from django.utils.html import format_html
 
-from ..models import Aria2cGID, Aria2cInstance
+from ..models import Aria2cGID, Instance
 from .utils import ReadOnlyAdminMixin
 
 logger = logging.getLogger(__name__)
@@ -20,11 +20,11 @@ class Aria2cInstanceMixin:
     """
 
     @admin.display()
-    def verbose_version(self, obj: Aria2cInstance) -> Optional[str]:
+    def verbose_version(self, obj: Instance) -> Optional[str]:
         """
 
         :param obj:
-        :type obj: Aria2cInstance
+        :type obj: Instance
         :return:
         :rtype: Optional[str]
         """
@@ -37,11 +37,11 @@ class Aria2cInstanceMixin:
             logger.exception(exc)
 
     @admin.display()
-    def global_statistics(self, obj: Aria2cInstance) -> Optional[str]:
+    def global_statistics(self, obj: Instance) -> Optional[str]:
         """
 
         :param obj:
-        :type obj: Aria2cInstance
+        :type obj: Instance
         :return:
         :rtype: Optional[str]
         """
@@ -54,11 +54,11 @@ class Aria2cInstanceMixin:
             logger.exception(exc)
 
     @admin.display()
-    def available_methods(self, obj: Aria2cInstance) -> Optional[str]:
+    def available_methods(self, obj: Instance) -> Optional[str]:
         """
 
         :param obj:
-        :type obj: Aria2cInstance
+        :type obj: Instance
         :return:
         :rtype: Optional[str]
         """
@@ -71,11 +71,11 @@ class Aria2cInstanceMixin:
             logger.exception(exc)
 
     @admin.display()
-    def available_notifications(self, obj: Aria2cInstance) -> Optional[str]:
+    def available_notifications(self, obj: Instance) -> Optional[str]:
         """
 
         :param obj:
-        :type obj: Aria2cInstance
+        :type obj: Instance
         :return:
         :rtype: Optional[str]
         """
@@ -88,11 +88,11 @@ class Aria2cInstanceMixin:
             logger.exception(exc)
 
     @admin.display()
-    def global_options(self, obj: Aria2cInstance) -> Optional[str]:
+    def global_options(self, obj: Instance) -> Optional[str]:
         """
 
         :param obj:
-        :type obj: Aria2cInstance
+        :type obj: Instance
         :return:
         :rtype: Optional[str]
         """
@@ -113,7 +113,7 @@ class Aria2cGIDInline(admin.TabularInline):
     model = Aria2cGID
 
 
-@admin.register(Aria2cInstance)
+@admin.register(Instance)
 class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAdmin):
     """
     The admin of Aria2 Instance model of aria2

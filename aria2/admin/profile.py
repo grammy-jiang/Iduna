@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.http import HttpRequest as _HttpRequest
 from django.http import HttpResponse
 
-from ..models import ArgumentPair, Aria2cInstance, Profile
+from ..models import ArgumentPair, Instance, Profile
 
 HttpRequest = TypeVar("HttpRequest", bound=_HttpRequest)
 
@@ -40,7 +40,7 @@ class Aria2cInstanceInline(admin.TabularInline):
     """
 
     exclude = ("verbose_version",)
-    model = Aria2cInstance
+    model = Instance
     readonly_fields = (
         "pid",
         "command",
@@ -73,5 +73,5 @@ class Aria2cProfileAdmin(admin.ModelAdmin):
         :rtype: HttpResponse
         """
         if "_create-instance" in request.POST:
-            Aria2cInstance.objects.create_from_profile(obj)
+            Instance.objects.create_from_profile(obj)
         return super().response_change(request, obj)

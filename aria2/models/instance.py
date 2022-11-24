@@ -31,20 +31,20 @@ class QuerySet(models.QuerySet):
     custom QuerySet to fit aria2c
     """
 
-    def create_from_pid(self, pid: int | str) -> Aria2cInstance:
+    def create_from_pid(self, pid: int | str) -> Instance:
         """
 
         :param pid:
         :type pid: int | str
         :return:
-        :rtype: Aria2cInstance
+        :rtype: Instance
         """
         Binary: TBinary = apps.get_model("aria2", "Binary")
         command = Binary.get_command(pid)
         aria2c, _ = Binary.objects.get_or_create(path=command.split(maxsplit=1)[0])
         return self.create(pid=pid, command=command, aria2c=aria2c)
 
-    def create_all_from_aria2c(self, aria2c: TBinary) -> tuple[Aria2cInstance, ...]:
+    def create_all_from_aria2c(self, aria2c: TBinary) -> tuple[Instance, ...]:
         """
 
         :param aria2c:
@@ -57,18 +57,18 @@ class QuerySet(models.QuerySet):
             for pid in aria2c.get_pids()
         )
 
-    def create_from_profile(self, profile: TProfile) -> Aria2cInstance:
+    def create_from_profile(self, profile: TProfile) -> Instance:
         """
 
         :param profile:
         :type profile: Profile
         :return:
-        :rtype: Aria2cInstance
+        :rtype: Instance
         """
         command = " ".join(profile.command)
         try:
             return self.get(command=command)
-        except Aria2cInstance.DoesNotExist:
+        except Instance.DoesNotExist:
             with subprocess.Popen(profile.command):
                 start = datetime.now()
                 while True:
@@ -86,7 +86,7 @@ class QuerySet(models.QuerySet):
 Manager = models.Manager.from_queryset(QuerySet)
 
 
-class Aria2cInstance(models.Model):
+class Instance(models.Model):
     """
     The model of Aria2 instance
     """

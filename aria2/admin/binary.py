@@ -6,7 +6,7 @@ import subprocess
 
 from django.contrib import admin
 
-from ..models import Aria2cInstance, Binary
+from ..models import Binary, Instance
 from .instance import Aria2cInstanceMixin
 from .profile import Profile
 from .utils import ReadOnlyAdminMixin
@@ -37,7 +37,7 @@ class Aria2cInstanceInline(Aria2cInstanceMixin, admin.TabularInline):
         "elapsed_time",
         "cumulative_cpu_times",
     )
-    model = Aria2cInstance
+    model = Instance
 
 
 class Aria2cProfileInline(admin.TabularInline):
@@ -109,5 +109,5 @@ class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         :rtype: str
         """
         return ", ".join(
-            str(instance.pid) for instance in Aria2cInstance.objects.filter(aria2c=obj)
+            str(instance.pid) for instance in Instance.objects.filter(aria2c=obj)
         )

@@ -19,19 +19,19 @@ from ..utils import TimeStampMixin
 from . import Aria2cGID
 
 if TYPE_CHECKING:
-    from ..instance import Aria2cInstance as TAria2cInstance
+    from ..instance import Instance as TInstance
 
 logger = logging.getLogger(__name__)
 
 
-def get_default_instance() -> TAria2cInstance:
+def get_default_instance() -> TInstance:
     """
 
     :return:
-    :rtype: Aria2cInstance
+    :rtype: Instance
     """
-    Aria2cInstance: TAria2cInstance = apps.get_model("aria2", "Aria2cInstance")
-    return Aria2cInstance.objects.get(profile__name=settings.ARIA2_DEFAULT_INSTANCE)
+    Instance: TInstance = apps.get_model("aria2", "Instance")
+    return Instance.objects.get(profile__name=settings.ARIA2_DEFAULT_INSTANCE)
 
 
 class AbstractAria2cGIDTask(TimeStampMixin):
@@ -43,7 +43,7 @@ class AbstractAria2cGIDTask(TimeStampMixin):
         "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
     )
     instance = models.ForeignKey(
-        "Aria2cInstance",
+        "Instance",
         blank=True,
         default=get_default_instance,
         null=True,

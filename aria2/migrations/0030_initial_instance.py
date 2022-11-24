@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="Aria2cInstance",
+            name="Instance",
             fields=[
                 ("pid", models.IntegerField(primary_key=True, serialize=False)),
                 ("command", models.CharField(max_length=256, unique=True)),

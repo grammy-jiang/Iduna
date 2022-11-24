@@ -25,7 +25,7 @@ class Aria2cGID(TimeStampMixin):
     """
 
     gid = models.CharField(max_length=16, primary_key=True)
-    instance = models.ForeignKey("Aria2cInstance", on_delete=models.CASCADE)
+    instance = models.ForeignKey("Instance", on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "GID"
