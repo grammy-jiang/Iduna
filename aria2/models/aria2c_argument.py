@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 from django.db import models
 
 if TYPE_CHECKING:
-    from .aria2c import Aria2c
+    from .binary import Aria2c
 
 logger = logging.getLogger(__name__)
 

@@ -3,7 +3,7 @@
 import django.db.models.deletion
 from django.db import migrations, models
 
-import aria2.models.aria2c
+import aria2.models.binary
 
 
 class Migration(migrations.Migration):
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("path", aria2.models.aria2c.PathField(max_length=256)),
+                ("path", aria2.models.binary.PathField(max_length=256)),
             ],
             options={
                 "verbose_name": "Aria2c - Binary",

@@ -3,8 +3,6 @@
 import django.db.models.deletion
 from django.db import migrations, models
 
-import aria2.models.aria2c
-
 
 class Migration(migrations.Migration):
 

@@ -17,10 +17,10 @@ from django.utils.functional import cached_property
 from ..exceptions import CommandExecutionFailed, CommandNotFound
 
 if TYPE_CHECKING:
-    from .aria2c import Aria2c as TAria2c
     from .aria2c_argument import Aria2cArgument as TAria2cArgument
     from .aria2c_profile import ArgumentPair as TArgumentPair
     from .aria2c_profile import Aria2cProfile as TAria2cProfile
+    from .binary import Aria2c as TAria2c
 
 
 logger = logging.getLogger(__name__)
