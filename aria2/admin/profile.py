@@ -44,7 +44,7 @@ class Aria2cInstanceInline(admin.TabularInline):
     readonly_fields = (
         "pid",
         "command",
-        "aria2c",
+        "binary",
         "effective_user_name",
         "version",
         "session_id",
@@ -58,9 +58,9 @@ class Aria2cProfileAdmin(admin.ModelAdmin):
     """
 
     change_form_template = "aria2/admin/change_form_profile.html"
-    fields = ("name", "aria2c")
+    fields = ("name", "binary")
     inlines = (ArgumentPairInline, Aria2cInstanceInline)
-    list_display = ("name", "aria2c", "args")
+    list_display = ("name", "binary", "args")
 
     def response_change(self, request: HttpRequest, obj: Profile) -> HttpResponse:
         """

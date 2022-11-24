@@ -43,30 +43,30 @@ class QuerySet(models.QuerySet):
     custom QuerySet to fit Aria2 Argument
     """
 
-    def create_from_aria2c(self, aria2c: Binary) -> QuerySet:
+    def create_from_binary(self, binary: Binary) -> QuerySet:
         """
 
-        :param aria2c:
-        :type aria2c: Binary
+        :param binary:
+        :type binary: Binary
         :return:
         :rtype: QuerySet
         """
-        self.filter(aria2c=aria2c).delete()
+        self.filter(binary=binary).delete()
 
-        Aria2cArgumentTag: TAria2cArgumentTag = apps.get_model("aria2", "ArgumentTag")
+        ArgumentTag: TAria2cArgumentTag = apps.get_model("aria2", "ArgumentTag")
 
         argument: Argument = None
         line: str
         for line in filter(
             None,
-            subprocess.check_output([aria2c.path, "--help=#all"])
+            subprocess.check_output([binary.path, "--help=#all"])
             .decode()
             .split("\n")[3:-3],
         ):
             if m := beginning_regex.match(line):
                 if argument:
                     argument.save()
-                argument = self.create(aria2c=aria2c, **m.groupdict())
+                argument = self.create(binary=binary, **m.groupdict())
                 continue
             if m := category_regex.match(line):
                 key, value = m.groupdict()["key"], m.groupdict()["value"]
@@ -78,13 +78,11 @@ class QuerySet(models.QuerySet):
                     )
                     continue
                 for i in value.split(", "):  # tags
-                    argument.tags.add(
-                        Aria2cArgumentTag.objects.get_or_create(value=i)[0]
-                    )
+                    argument.tags.add(ArgumentTag.objects.get_or_create(value=i)[0])
                 continue
             argument.description = " ".join((argument.description, line.strip()))
         argument.save()
-        return self.filter(aria2c=aria2c)
+        return self.filter(binary=binary)
 
 
 Manager = models.Manager.from_queryset(QuerySet)
@@ -104,7 +102,7 @@ class Argument(models.Model):
     default = models.CharField(blank=True, max_length=256, null=True)
     tags = models.ManyToManyField("ArgumentTag")
 
-    aria2c = models.ForeignKey("Binary", on_delete=models.CASCADE)
+    binary = models.ForeignKey("Binary", on_delete=models.CASCADE)
 
     objects = Manager()
 

@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "aria2c",
+                    "binary",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE, to="aria2.Binary"
                     ),

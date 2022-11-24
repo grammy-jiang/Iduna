@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ("pid", models.IntegerField(primary_key=True, serialize=False)),
                 ("command", models.CharField(max_length=256, unique=True)),
                 (
-                    "aria2c",
+                    "binary",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE, to="aria2.Binary"
                     ),

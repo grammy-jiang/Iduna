@@ -109,5 +109,5 @@ class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         :rtype: str
         """
         return ", ".join(
-            str(instance.pid) for instance in Instance.objects.filter(aria2c=obj)
+            str(instance.pid) for instance in Instance.objects.filter(binary=obj)
         )

@@ -41,20 +41,20 @@ class QuerySet(models.QuerySet):
         """
         Binary: TBinary = apps.get_model("aria2", "Binary")
         command = Binary.get_command(pid)
-        aria2c, _ = Binary.objects.get_or_create(path=command.split(maxsplit=1)[0])
-        return self.create(pid=pid, command=command, aria2c=aria2c)
+        binary, _ = Binary.objects.get_or_create(path=command.split(maxsplit=1)[0])
+        return self.create(pid=pid, command=command, binary=binary)
 
-    def create_all_from_aria2c(self, aria2c: TBinary) -> tuple[Instance, ...]:
+    def create_all_from_aria2c(self, binary: TBinary) -> tuple[Instance, ...]:
         """
 
-        :param aria2c:
-        :type aria2c: TAria2c
+        :param binary:
+        :type binary: TBinary
         :return:
         :rtype: tuple[Aria2cInstance, ...]
         """
         return tuple(
-            self.create(pid=pid, command=aria2c.get_command(pid), aria2c=aria2c)
-            for pid in aria2c.get_pids()
+            self.create(pid=pid, command=binary.get_command(pid), binary=binary)
+            for pid in binary.get_pids()
         )
 
     def create_from_profile(self, profile: TProfile) -> Instance:
@@ -73,13 +73,13 @@ class QuerySet(models.QuerySet):
                 start = datetime.now()
                 while True:
                     try:
-                        pid = profile.aria2c.get_pid(command)
+                        pid = profile.binary.get_pid(command)
                     except CommandNotFound as exc:
                         if (datetime.now() - start) > timedelta(seconds=30):
                             raise CommandExecutionFailed from exc
                         continue
                     return self.create(
-                        pid=pid, command=command, aria2c=profile.aria2c, profile=profile
+                        pid=pid, command=command, binary=profile.binary, profile=profile
                     )
 
 
@@ -94,7 +94,7 @@ class Instance(models.Model):
     pid = models.IntegerField(primary_key=True)
     command = models.CharField(max_length=256, unique=True)
 
-    aria2c = models.ForeignKey("Binary", on_delete=models.CASCADE)
+    binary = models.ForeignKey("Binary", on_delete=models.CASCADE)
     profile = models.OneToOneField(
         "Profile", blank=True, null=True, on_delete=models.CASCADE
     )

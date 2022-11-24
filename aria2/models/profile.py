@@ -18,7 +18,7 @@ class Profile(models.Model):
     """
 
     name = models.CharField(max_length=256, primary_key=True)
-    aria2c = models.ForeignKey("Binary", on_delete=models.CASCADE)
+    binary = models.ForeignKey("Binary", on_delete=models.CASCADE)
 
     arguments = models.ManyToManyField("Argument", through="ArgumentPair")
 
@@ -75,7 +75,7 @@ class Profile(models.Model):
         :return:
         :rtype: tuple[str, ...]
         """
-        return str(self.aria2c.path), *self._args
+        return str(self.binary.path), *self._args
 
 
 class ArgumentPair(models.Model):

@@ -128,7 +128,7 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "mem",
         "elapsed_time",
         "cumulative_cpu_times",
-        "aria2c",
+        "binary",
         "verbose_version",
         "session_id",
         "global_statistics",
@@ -146,7 +146,7 @@ class Aria2cInstanceAdmin(ReadOnlyAdminMixin, Aria2cInstanceMixin, admin.ModelAd
         "mem",
         "elapsed_time",
         "cumulative_cpu_times",
-        "aria2c",
+        "binary",
         "version",
     )
     readonly_fields = (

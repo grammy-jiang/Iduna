@@ -5,7 +5,7 @@ import logging
 
 from django.contrib import admin
 
-from ..models import ArgumentTag, Argument
+from ..models import Argument, ArgumentTag
 from .utils import ReadOnlyAdminMixin
 
 logger = logging.getLogger(__name__)
@@ -30,7 +30,7 @@ class Aria2cArgumentTagAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         :return:
         :rtype: int
         """
-        return obj.aria2cargument_set.count()
+        return obj.argument_set.count()
 
 
 @admin.register(Argument)
@@ -45,7 +45,7 @@ class Aria2cArgumentAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         "default",
         "description",
         "possible_values",
-        "aria2c",
+        "binary",
     )
     ordering = ("long_argument",)
     search_fields = ("short_argument", "long_argument", "description")
