@@ -26,19 +26,11 @@ class Aria2cGID(TimeStampMixin):
     The model of Aria2 GID
     """
 
-    gid = models.CharField(blank=True, max_length=16, null=True)
+    gid = models.CharField(max_length=16, primary_key=True)
     instance = models.ForeignKey("Aria2cInstance", on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Aria2c - GID"
-
-    def __str__(self) -> str:
-        """
-
-        :return:
-        :rtype: str
-        """
-        return pprint.pformat(self.gid)
 
     @property
     def status(self) -> str:
@@ -114,9 +106,14 @@ class AbstractAria2cGIDTask(TimeStampMixin):
         "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
     )
     instance = models.ForeignKey(
-        "Aria2cInstance", default=get_default_instance, on_delete=models.CASCADE
+        "Aria2cInstance",
+        blank=True,
+        default=get_default_instance,
+        null=True,
+        on_delete=models.CASCADE,
     )
 
+    secret = models.CharField(blank=True, max_length=256, null=True)
     options = models.JSONField(blank=True, null=True)
     position = models.PositiveIntegerField(blank=True, null=True)
 
@@ -140,8 +137,11 @@ class AbstractAria2cGIDTask(TimeStampMixin):
         :return:
         :rtype: None
         """
+        args = self._get_args()
+        if self.secret:
+            args = [self.secret, *args]
         self.gid = Aria2cGID.objects.create(
-            gid=self.instance.rpc_server_proxy.aria2.addUri(*self._get_args()),
+            gid=self.instance.rpc_server_proxy.aria2.addUri(*args),
             instance=self.instance,
         )
         return self.save()
