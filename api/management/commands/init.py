@@ -163,10 +163,11 @@ class Command(BaseCommand):
         :rtype: None
         """
         aria2cs = Aria2c.objects.create_from_file_system()
+        paths = list(str(path) for path in aria2cs.values_list("path", flat=True))
         self.stdout.write(
             self.style.SUCCESS(
-                f"Load [{len(aria2cs)}] binaries from the local file system:\n"
-                f"{pprint.pformat(aria2cs)}"
+                f"Load [{aria2cs.count()}] binaries from the local file system:\n"
+                f"{pprint.pformat(paths)}"
             )
         )
 

@@ -50,21 +50,20 @@ class QuerySet(models.QuerySet):
     custom QuerySet to fit the local file system
     """
 
-    def create_from_file_system(self) -> list[Aria2c]:
+    def create_from_file_system(self) -> QuerySet:
         """
 
         :return:
-        :rtype: list[Aria2c]
+        :rtype: QuerySet
         """
-        aria2cs: list[Aria2c] = []
         for path in (
             subprocess.check_output(["which", "--all", "aria2c"])
             .decode()
             .strip()
             .split("\n")
         ):
-            aria2cs.append(self.create(path=path))
-        return aria2cs
+            self.create(path=path)
+        return self.all()
 
 
 Manager = models.Manager.from_queryset(QuerySet)
