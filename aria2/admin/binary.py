@@ -8,7 +8,7 @@ from django.contrib import admin
 
 from ..models import Aria2cInstance, Binary
 from .aria2c_instance import Aria2cInstanceMixin
-from .aria2c_profile import Aria2cProfile
+from .profile import Aria2cProfile
 from .utils import ReadOnlyAdminMixin
 
 logger = logging.getLogger(__name__)

@@ -18,9 +18,9 @@ from ..exceptions import CommandExecutionFailed, CommandNotFound
 
 if TYPE_CHECKING:
     from .argument import Argument as TArgument
-    from .aria2c_profile import ArgumentPair as TArgumentPair
-    from .aria2c_profile import Aria2cProfile as TAria2cProfile
     from .binary import Binary as TBinary
+    from .profile import ArgumentPair as TArgumentPair
+    from .profile import Aria2cProfile as TAria2cProfile
 
 
 logger = logging.getLogger(__name__)
