@@ -96,8 +96,8 @@ class Binary(models.Model):
     objects = Manager()
 
     class Meta:
-        verbose_name = "Aria2c - Binary"
-        verbose_name_plural = "Aria2c - Binaries"
+        verbose_name = "Binary"
+        verbose_name_plural = "Binaries"
 
     def __str__(self) -> str:
         """

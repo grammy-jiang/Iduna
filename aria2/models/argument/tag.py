@@ -9,7 +9,7 @@ class ArgumentTag(models.Model):
     value = models.CharField(max_length=256, primary_key=True, unique=True)
 
     class Meta:
-        verbose_name = "Aria2c - Argument Tag"
+        verbose_name = "Argument - Tag"
 
     def __str__(self) -> str:
         """

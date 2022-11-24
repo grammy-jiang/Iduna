@@ -107,7 +107,7 @@ class Argument(models.Model):
     objects = Manager()
 
     class Meta:
-        verbose_name = "Aria2c - Argument"
+        verbose_name = "Argument"
 
     def __str__(self) -> str:
         """

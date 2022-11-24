@@ -105,7 +105,7 @@ class Instance(models.Model):
     objects = Manager()
 
     class Meta:
-        verbose_name = "Aria2c - Instance"
+        verbose_name = "Instance"
 
     def delete(
         self, using: Any = None, keep_parents: bool = False

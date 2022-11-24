@@ -25,7 +25,7 @@ class Profile(models.Model):
     args = models.CharField(blank=True, max_length=256, null=True, unique=True)
 
     class Meta:
-        verbose_name = "Aria2c - Profile"
+        verbose_name = "Profile"
 
     def __str__(self) -> str:
         """
@@ -93,7 +93,7 @@ class ArgumentPair(models.Model):
                 fields=("profile", "argument"), name="unique_argument_pair"
             ),
         )
-        verbose_name = "Aria2c - Argument Pair"
+        verbose_name = "Argument - Pair"
 
     def __str__(self) -> str:
         """
