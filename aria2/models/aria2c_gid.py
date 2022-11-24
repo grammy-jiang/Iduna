@@ -8,6 +8,7 @@ reported and the download is not added.
 """
 from __future__ import annotations
 
+import logging
 import pprint
 from typing import TYPE_CHECKING, Any
 
@@ -19,6 +20,8 @@ from .utils import TimeStampMixin
 
 if TYPE_CHECKING:
     from .aria2c_instance import Aria2cInstance
+
+logger = logging.getLogger(__name__)
 
 
 class Aria2cGID(TimeStampMixin):

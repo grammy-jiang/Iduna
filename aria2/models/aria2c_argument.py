@@ -3,6 +3,7 @@ The model of Aria2 Argument and Argument Tag
 """
 from __future__ import annotations
 
+import logging
 import re
 import subprocess
 from typing import TYPE_CHECKING
@@ -12,6 +13,7 @@ from django.db import models
 if TYPE_CHECKING:
     from .aria2c import Aria2c
 
+logger = logging.getLogger(__name__)
 
 beginning_regex = re.compile(
     r"""

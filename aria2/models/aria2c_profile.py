@@ -3,10 +3,13 @@ The model of Aria2 Profile
 """
 from __future__ import annotations
 
+import logging
 from typing import Iterable, Optional
 
 from django.db import models
 from django.utils.functional import cached_property
+
+logger = logging.getLogger(__name__)
 
 
 class Aria2cProfile(models.Model):

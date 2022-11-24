@@ -3,6 +3,7 @@ The model of Aria2
 """
 from __future__ import annotations
 
+import logging
 import subprocess
 from pathlib import Path
 from typing import Optional, TypeVar
@@ -14,6 +15,8 @@ from django.db.models.expressions import Col
 from ..exceptions import CommandNotFound
 
 _T = TypeVar("_T", bound=BaseDatabaseWrapper)
+
+logger = logging.getLogger(__name__)
 
 
 class PathField(models.CharField):
