@@ -60,16 +60,17 @@ class QuerySet(models.QuerySet):
     custom QuerySet to fit Aria2 Argument
     """
 
-    def create_from_aria2c(self, aria2c: Aria2c) -> list[Aria2cArgument]:
+    def create_from_aria2c(self, aria2c: Aria2c) -> QuerySet:
         """
 
         :param aria2c:
         :type aria2c: Aria2c
         :return:
-        :rtype: list[Aria2cArgument]
+        :rtype: QuerySet
         """
-        arguments: list[Aria2cArgument] = []
-        _argument: Aria2cArgument = None
+        self.filter(aria2c=aria2c).delete()
+
+        argument: Aria2cArgument = None
         line: str
         for line in filter(
             None,
@@ -78,29 +79,27 @@ class QuerySet(models.QuerySet):
             .split("\n")[3:-3],
         ):
             if m := beginning_regex.match(line):
-                if _argument:
-                    _argument.save()
-                    arguments.append(_argument)
-                _argument = self.create(aria2c=aria2c, **m.groupdict())
+                if argument:
+                    argument.save()
+                argument = self.create(aria2c=aria2c, **m.groupdict())
                 continue
             if m := category_regex.match(line):
                 key, value = m.groupdict()["key"], m.groupdict()["value"]
                 if key != "Tags":
                     setattr(
-                        _argument,
+                        argument,
                         key.lower().replace(" ", "_"),
                         value.replace("#", ""),
                     )
                     continue
                 for i in value.split(", "):  # tags
-                    _argument.tags.add(
+                    argument.tags.add(
                         Aria2cArgumentTag.objects.get_or_create(value=i)[0]
                     )
                 continue
-            _argument.description = " ".join((_argument.description, line.strip()))
-        _argument.save()
-        arguments.append(_argument)
-        return arguments
+            argument.description = " ".join((argument.description, line.strip()))
+        argument.save()
+        return self.filter(aria2c=aria2c)
 
 
 Manager = models.Manager.from_queryset(QuerySet)
