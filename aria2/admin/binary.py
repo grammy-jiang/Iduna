@@ -5,6 +5,7 @@ import logging
 import subprocess
 
 from django.contrib import admin
+from django.utils.html import format_html
 
 from ..models import Binary, Instance
 from .instance import Aria2cInstanceMixin
@@ -97,7 +98,10 @@ class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         :return:
         :rtype: str
         """
-        return subprocess.check_output([obj.path, "--version"]).decode()
+        return format_html(
+            "<pre>{}</pre>",
+            subprocess.check_output([obj.path, "--version"]).decode(),
+        )
 
     @admin.display()
     def instances(self, obj: Binary) -> str:
