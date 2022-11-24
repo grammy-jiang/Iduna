@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     from .aria2c_argument import Aria2cArgument as TAria2cArgument
     from .aria2c_profile import ArgumentPair as TArgumentPair
     from .aria2c_profile import Aria2cProfile as TAria2cProfile
-    from .binary import Aria2c as TAria2c
+    from .binary import Binary as TBinary
 
 
 logger = logging.getLogger(__name__)
@@ -39,12 +39,12 @@ class QuerySet(models.QuerySet):
         :return:
         :rtype: Aria2cInstance
         """
-        Aria2c: TAria2c = apps.get_model("aria2", "Aria2c")
-        command = Aria2c.get_command(pid)
-        aria2c, _ = Aria2c.objects.get_or_create(path=command.split(maxsplit=1)[0])
+        Binary: TBinary = apps.get_model("aria2", "Binary")
+        command = Binary.get_command(pid)
+        aria2c, _ = Binary.objects.get_or_create(path=command.split(maxsplit=1)[0])
         return self.create(pid=pid, command=command, aria2c=aria2c)
 
-    def create_all_from_aria2c(self, aria2c: TAria2c) -> tuple[Aria2cInstance, ...]:
+    def create_all_from_aria2c(self, aria2c: TBinary) -> tuple[Aria2cInstance, ...]:
         """
 
         :param aria2c:
@@ -94,7 +94,7 @@ class Aria2cInstance(models.Model):
     pid = models.IntegerField(primary_key=True)
     command = models.CharField(max_length=256, unique=True)
 
-    aria2c = models.ForeignKey("Aria2c", on_delete=models.CASCADE)
+    aria2c = models.ForeignKey("Binary", on_delete=models.CASCADE)
     profile = models.OneToOneField(
         "Aria2cProfile", blank=True, null=True, on_delete=models.CASCADE
     )

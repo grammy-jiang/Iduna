@@ -6,7 +6,7 @@ import subprocess
 
 from django.contrib import admin
 
-from ..models import Aria2c, Aria2cInstance
+from ..models import Aria2cInstance, Binary
 from .aria2c_instance import Aria2cInstanceMixin
 from .aria2c_profile import Aria2cProfile
 from .utils import ReadOnlyAdminMixin
@@ -61,7 +61,7 @@ class Aria2cProfileInline(admin.TabularInline):
         return ", ".join(obj.args)
 
 
-@admin.register(Aria2c)
+@admin.register(Binary)
 class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     """
     The admin of Aria2 model of aria2
@@ -73,11 +73,11 @@ class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     readonly_fields = ("path", "version", "verbose_version", "instances")
 
     @admin.display()
-    def version(self, obj: Aria2c) -> str:
+    def version(self, obj: Binary) -> str:
         """
 
         :param obj:
-        :type obj: Aria2c
+        :type obj: Binary
         :return:
         :rtype: str
         """
@@ -89,22 +89,22 @@ class Aria2cAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         )
 
     @admin.display()
-    def verbose_version(self, obj: Aria2c) -> str:
+    def verbose_version(self, obj: Binary) -> str:
         """
 
         :param obj:
-        :type obj: Aria2c
+        :type obj: Binary
         :return:
         :rtype: str
         """
         return subprocess.check_output([obj.path, "--version"]).decode()
 
     @admin.display()
-    def instances(self, obj: Aria2c) -> str:
+    def instances(self, obj: Binary) -> str:
         """
 
         :param obj:
-        :type obj: Aria2c
+        :type obj: Binary
         :return:
         :rtype: str
         """

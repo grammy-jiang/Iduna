@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 from django.db import models
 
 if TYPE_CHECKING:
-    from .binary import Aria2c
+    from .binary import Binary
 
 logger = logging.getLogger(__name__)
 
@@ -60,11 +60,11 @@ class QuerySet(models.QuerySet):
     custom QuerySet to fit Aria2 Argument
     """
 
-    def create_from_aria2c(self, aria2c: Aria2c) -> QuerySet:
+    def create_from_aria2c(self, aria2c: Binary) -> QuerySet:
         """
 
         :param aria2c:
-        :type aria2c: Aria2c
+        :type aria2c: Binary
         :return:
         :rtype: QuerySet
         """
@@ -119,7 +119,7 @@ class Aria2cArgument(models.Model):
     default = models.CharField(blank=True, max_length=256, null=True)
     tags = models.ManyToManyField("Aria2cArgumentTag")
 
-    aria2c = models.ForeignKey("Aria2c", on_delete=models.CASCADE)
+    aria2c = models.ForeignKey("Binary", on_delete=models.CASCADE)
 
     objects = Manager()
 

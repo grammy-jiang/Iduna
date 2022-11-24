@@ -86,7 +86,7 @@ class QuerySet(models.QuerySet):
 Manager = models.Manager.from_queryset(QuerySet)
 
 
-class Aria2c(models.Model):
+class Binary(models.Model):
     """
     The model of Aria2
     """

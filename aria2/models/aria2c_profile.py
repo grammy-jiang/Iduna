@@ -18,7 +18,7 @@ class Aria2cProfile(models.Model):
     """
 
     name = models.CharField(max_length=256, primary_key=True)
-    aria2c = models.ForeignKey("Aria2c", on_delete=models.CASCADE)
+    aria2c = models.ForeignKey("Binary", on_delete=models.CASCADE)
 
     arguments = models.ManyToManyField("Aria2cArgument", through="ArgumentPair")
 
