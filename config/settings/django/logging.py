@@ -9,7 +9,7 @@ LOGGING = {
     "version": 1,
     "formatters": {
         "verbose": {
-            "format": "{asctime} | {levelname:<7} | {module}:<{filename}>:{lineno} - {message}",
+            "format": "{asctime} | {levelname:<7} | {module}:<{funcName}>:{lineno} - {message}",
             "style": "{",
         }
     },
