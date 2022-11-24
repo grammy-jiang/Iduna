@@ -1,11 +1,14 @@
 """
 The admin of Aria2 Argument and Aria2 Argument Tag model of aria2
 """
+import logging
 
 from django.contrib import admin
 
 from ..models import Aria2cArgument, Aria2cArgumentTag
 from .utils import ReadOnlyAdminMixin
+
+logger = logging.getLogger(__name__)
 
 
 @admin.register(Aria2cArgumentTag)

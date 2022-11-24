@@ -1,6 +1,7 @@
 """
 The admin of Aria2 GID model of aria2
 """
+import logging
 from typing import Optional, TypeVar
 
 from django.contrib import admin
@@ -10,6 +11,8 @@ from django.http import HttpResponse
 from ..models import Aria2cGID, Aria2cGIDMetaLink, Aria2cGIDTorrent, Aria2cGIDUri
 
 HttpRequest = TypeVar("HttpRequest", bound=_HttpRequest)
+
+logger = logging.getLogger(__name__)
 
 
 @admin.register(Aria2cGID)
@@ -91,20 +94,6 @@ class Aria2cGIDUriAdmin(admin.ModelAdmin):
     list_display = ("gid", "uris", "options", "position")
     readonly_fields = ("gid",)
 
-    def has_change_permission(
-        self, request: HttpRequest, obj: Optional[Aria2cGIDUri] = None
-    ) -> bool:
-        """
-
-        :param request:
-        :type request: HttpRequest
-        :param obj:
-        :type obj: Optional[Aria2cGIDUri]
-        :return:
-        :rtype: bool
-        """
-        return False
-
     def response_change(self, request: HttpRequest, obj: Aria2cGIDUri) -> HttpResponse:
         """
 
@@ -129,20 +118,6 @@ class Aria2cGIDTorrentAdmin(admin.ModelAdmin):
     change_form_template = "aria2/admin/change_form_gid.html"
     list_display = ("gid", "torrent", "uris", "options", "position")
     readonly_fields = ("gid",)
-
-    def has_change_permission(
-        self, request: HttpRequest, obj: Optional[Aria2cGIDUri] = None
-    ) -> bool:
-        """
-
-        :param request:
-        :type request: HttpRequest
-        :param obj:
-        :type obj: Optional[Aria2cGIDUri]
-        :return:
-        :rtype: bool
-        """
-        return False
 
     def response_change(
         self, request: HttpRequest, obj: Aria2cGIDTorrent
@@ -170,20 +145,6 @@ class Aria2cGIDMetaLinkAdmin(admin.ModelAdmin):
     change_form_template = "aria2/admin/change_form_gid.html"
     list_display = ("gid", "metalink", "options", "position")
     readonly_fields = ("gid",)
-
-    def has_change_permission(
-        self, request: HttpRequest, obj: Optional[Aria2cGIDUri] = None
-    ) -> bool:
-        """
-
-        :param request:
-        :type request: HttpRequest
-        :param obj:
-        :type obj: Optional[Aria2cGIDUri]
-        :return:
-        :rtype: bool
-        """
-        return False
 
     def response_change(
         self, request: HttpRequest, obj: Aria2cGIDMetaLink

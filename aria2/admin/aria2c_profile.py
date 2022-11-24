@@ -1,7 +1,7 @@
 """
 The admin of Aria2 Profile model of aria2
 """
-
+import logging
 from typing import TypeVar
 
 from django.contrib import admin
@@ -11,6 +11,8 @@ from django.http import HttpResponse
 from ..models import ArgumentPair, Aria2cInstance, Aria2cProfile
 
 HttpRequest = TypeVar("HttpRequest", bound=_HttpRequest)
+
+logger = logging.getLogger(__name__)
 
 
 @admin.register(ArgumentPair)

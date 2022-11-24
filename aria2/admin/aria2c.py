@@ -1,6 +1,7 @@
 """
 The admin of Aria2 model of aria2
 """
+import logging
 import subprocess
 
 from django.contrib import admin
@@ -9,6 +10,8 @@ from ..models import Aria2c, Aria2cInstance
 from .aria2c_instance import Aria2cInstanceMixin
 from .aria2c_profile import Aria2cProfile
 from .utils import ReadOnlyAdminMixin
+
+logger = logging.getLogger(__name__)
 
 
 class Aria2cInstanceInline(Aria2cInstanceMixin, admin.TabularInline):
