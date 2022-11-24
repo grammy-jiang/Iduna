@@ -1,10 +1,6 @@
 """
-The model of Aria2 GID
-
-Aria2 identifies each download by the ID called GID. The GID must be hex string of 16
-characters, thus [0-9a-fA-F] are allowed and leading zeros must not be stripped. The GID
-all 0 is reserved and must not be used. The GID must be unique, otherwise error is
-reported and the download is not added.
+The model of Aria2 GID Torrent
+* https://aria2.github.io/manual/en/html/aria2c.html#aria2.addTorrent
 """
 from __future__ import annotations
 
@@ -19,15 +15,20 @@ logger = logging.getLogger(__name__)
 
 class Aria2cGIDTorrent(AbstractAria2cGIDTask):
     """
-    The model of Aria2 GID Torrent
-    * https://aria2.github.io/manual/en/html/aria2c.html#aria2.addTorrent
+    This method adds a BitTorrent download by uploading a ".torrent" file. If you want
+    to add a BitTorrent Magnet URI, use the aria2.addUri() method instead. torrent must
+    be a base64-encoded string containing the contents of the ".torrent" file. uris is
+    an array of URIs (string). uris is used for Web-seeding. For single file torrents,
+    the URI can be a complete URI pointing to the resource; if URI ends with /, name in
+    torrent file is added. For multi-file torrents, name and path in torrent are added
+    to form a URI for each file.
     """
 
     torrent = models.TextField()
     uris = models.JSONField()
 
     class Meta:
-        verbose_name = "Aria2c - GID - Torrent"
+        verbose_name = "GID - Torrent"
 
     def _get_args(self) -> list:
         """
