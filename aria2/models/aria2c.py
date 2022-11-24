@@ -4,6 +4,7 @@ The model of Aria2
 from __future__ import annotations
 
 import logging
+import pprint
 import subprocess
 from pathlib import Path
 from typing import Optional, TypeVar
@@ -16,7 +17,7 @@ from ..exceptions import CommandNotFound
 
 _T = TypeVar("_T", bound=BaseDatabaseWrapper)
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("django")
 
 
 class PathField(models.CharField):
@@ -56,13 +57,29 @@ class QuerySet(models.QuerySet):
         :return:
         :rtype: QuerySet
         """
-        for path in (
+        paths = set(
             subprocess.check_output(["which", "--all", "aria2c"])
             .decode()
             .strip()
             .split("\n")
-        ):
+        )
+        paths_in_database = set(
+            str(path) for path in self.values_list("path", flat=True)
+        )
+
+        self.filter(path__in=paths_in_database.difference(paths))
+        logger.info(
+            "The paths existed in the database but not in $PATH are removed:\n%s",
+            pprint.pformat(sorted(list(paths_in_database.difference(paths)))),
+        )
+
+        for path in paths.difference(paths_in_database):
             self.create(path=path)
+        logger.info(
+            "The paths existed in $PATH but not in the database are created:\n%s",
+            pprint.pformat(sorted(list(paths.difference(paths_in_database)))),
+        )
+
         return self.all()
 
 
