@@ -19,7 +19,7 @@ from ..utils import TimeStampMixin
 logger = logging.getLogger(__name__)
 
 
-class Aria2cGID(TimeStampMixin):
+class GID(TimeStampMixin):
     """
     The model of Aria2 GID
     """

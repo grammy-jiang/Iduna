@@ -8,14 +8,14 @@ from django.contrib import admin
 from django.http import HttpRequest as _HttpRequest
 from django.http import HttpResponse
 
-from ..models import Aria2cGID, Aria2cGIDMetaLink, Aria2cGIDTorrent, Aria2cGIDUri
+from ..models import GID, Aria2cGIDMetaLink, Aria2cGIDTorrent, Aria2cGIDUri
 
 HttpRequest = TypeVar("HttpRequest", bound=_HttpRequest)
 
 logger = logging.getLogger(__name__)
 
 
-@admin.register(Aria2cGID)
+@admin.register(GID)
 class Aria2cGIDAdmin(admin.ModelAdmin):
     """
     The admin of Aria2 GID model of aria2
@@ -56,11 +56,11 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
     )
 
     @admin.display()
-    def completed_percentage(self, obj: Aria2cGID) -> Optional[float]:
+    def completed_percentage(self, obj: GID) -> Optional[float]:
         """
 
         :param obj:
-        :type obj: Aria2cGID
+        :type obj: GID
         :return:
         :rtype: Optional[float]
         """
@@ -70,14 +70,14 @@ class Aria2cGIDAdmin(admin.ModelAdmin):
             return None
 
     def has_change_permission(
-        self, request: HttpRequest, obj: Optional[Aria2cGID] = None
+        self, request: HttpRequest, obj: Optional[GID] = None
     ) -> bool:
         """
 
         :param request:
         :type request: HttpRequest
         :param obj:
-        :type obj: Optional[Aria2cGID]
+        :type obj: Optional[GID]
         :return:
         :rtype: bool
         """

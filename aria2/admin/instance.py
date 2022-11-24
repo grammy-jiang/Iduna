@@ -8,7 +8,7 @@ from typing import Optional
 from django.contrib import admin
 from django.utils.html import format_html
 
-from ..models import Aria2cGID, Instance
+from ..models import GID, Instance
 from .utils import ReadOnlyAdminMixin
 
 logger = logging.getLogger(__name__)
@@ -110,7 +110,7 @@ class Aria2cGIDInline(admin.TabularInline):
     the inline of Aria2cGID
     """
 
-    model = Aria2cGID
+    model = GID
 
 
 @admin.register(Instance)

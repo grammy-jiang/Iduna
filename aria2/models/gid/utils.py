@@ -16,7 +16,7 @@ from django.conf import settings
 from django.db import models
 
 from ..utils import TimeStampMixin
-from . import Aria2cGID
+from . import GID
 
 if TYPE_CHECKING:
     from ..instance import Instance as TInstance
@@ -39,9 +39,7 @@ class AbstractAria2cGIDTask(TimeStampMixin):
     The abstract model of Aria2 GID task
     """
 
-    gid = models.OneToOneField(
-        "Aria2cGID", blank=True, null=True, on_delete=models.CASCADE
-    )
+    gid = models.OneToOneField("GID", blank=True, null=True, on_delete=models.CASCADE)
     instance = models.ForeignKey(
         "Instance",
         blank=True,
@@ -77,7 +75,7 @@ class AbstractAria2cGIDTask(TimeStampMixin):
         args = self._get_args()
         if self.secret:
             args = [self.secret, *args]
-        self.gid = Aria2cGID.objects.create(
+        self.gid = GID.objects.create(
             gid=self.instance.rpc_server_proxy.aria2.addUri(*args),
             instance=self.instance,
         )
