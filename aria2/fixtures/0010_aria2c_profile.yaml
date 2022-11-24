@@ -1,4 +1,4 @@
-- model: aria2.aria2cprofile
+- model: aria2.profile
   pk: default
   fields:
     aria2c: 1

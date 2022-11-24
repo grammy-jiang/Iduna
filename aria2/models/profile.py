@@ -12,7 +12,7 @@ from django.utils.functional import cached_property
 logger = logging.getLogger(__name__)
 
 
-class Aria2cProfile(models.Model):
+class Profile(models.Model):
     """
     The model of Aria2 Profile
     """
@@ -83,7 +83,7 @@ class ArgumentPair(models.Model):
     The model of Aria2 Profile Argument Pair
     """
 
-    profile = models.ForeignKey("Aria2cProfile", on_delete=models.CASCADE)
+    profile = models.ForeignKey("Profile", on_delete=models.CASCADE)
     argument = models.ForeignKey("Argument", on_delete=models.CASCADE)
     value = models.CharField(max_length=256)
 

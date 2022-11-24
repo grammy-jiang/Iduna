@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="Aria2cProfile",
+            name="Profile",
             fields=[
                 (
                     "name",
@@ -70,7 +70,7 @@ class Migration(migrations.Migration):
             model_name="argumentpair",
             name="profile",
             field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to="aria2.aria2cprofile"
+                on_delete=django.db.models.deletion.CASCADE, to="aria2.profile"
             ),
         ),
         migrations.AddConstraint(

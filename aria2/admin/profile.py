@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.http import HttpRequest as _HttpRequest
 from django.http import HttpResponse
 
-from ..models import ArgumentPair, Aria2cInstance, Aria2cProfile
+from ..models import ArgumentPair, Aria2cInstance, Profile
 
 HttpRequest = TypeVar("HttpRequest", bound=_HttpRequest)
 
@@ -51,7 +51,7 @@ class Aria2cInstanceInline(admin.TabularInline):
     )
 
 
-@admin.register(Aria2cProfile)
+@admin.register(Profile)
 class Aria2cProfileAdmin(admin.ModelAdmin):
     """
     The admin of Aria2 Profile model of aria2
@@ -62,13 +62,13 @@ class Aria2cProfileAdmin(admin.ModelAdmin):
     inlines = (ArgumentPairInline, Aria2cInstanceInline)
     list_display = ("name", "aria2c", "args")
 
-    def response_change(self, request: HttpRequest, obj: Aria2cProfile) -> HttpResponse:
+    def response_change(self, request: HttpRequest, obj: Profile) -> HttpResponse:
         """
 
         :param request:
         :type request: HttpRequest
         :param obj:
-        :type obj: Aria2cProfile
+        :type obj: Profile
         :return:
         :rtype: HttpResponse
         """

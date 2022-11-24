@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     from .argument import Argument as TArgument
     from .binary import Binary as TBinary
     from .profile import ArgumentPair as TArgumentPair
-    from .profile import Aria2cProfile as TAria2cProfile
+    from .profile import Profile as TProfile
 
 
 logger = logging.getLogger(__name__)
@@ -57,11 +57,11 @@ class QuerySet(models.QuerySet):
             for pid in aria2c.get_pids()
         )
 
-    def create_from_profile(self, profile: TAria2cProfile) -> Aria2cInstance:
+    def create_from_profile(self, profile: TProfile) -> Aria2cInstance:
         """
 
         :param profile:
-        :type profile: TAria2cProfile
+        :type profile: Profile
         :return:
         :rtype: Aria2cInstance
         """
@@ -96,7 +96,7 @@ class Aria2cInstance(models.Model):
 
     aria2c = models.ForeignKey("Binary", on_delete=models.CASCADE)
     profile = models.OneToOneField(
-        "Aria2cProfile", blank=True, null=True, on_delete=models.CASCADE
+        "Profile", blank=True, null=True, on_delete=models.CASCADE
     )
 
     effective_user_name = models.CharField(blank=True, max_length=256, null=True)
@@ -145,11 +145,9 @@ class Aria2cInstance(models.Model):
         :return:
         :rtype: None
         """
-        Aria2cProfile: TAria2cProfile = apps.get_model("aria2", "Aria2cProfile")
+        Profile: TProfile = apps.get_model("aria2", "Profile")
         if not self.profile:
-            self.profile = Aria2cProfile.objects.get(
-                args=self.command.split(maxsplit=1)[-1]
-            )
+            self.profile = Profile.objects.get(args=self.command.split(maxsplit=1)[-1])
         if not self.effective_user_name:
             self.effective_user_name = (
                 subprocess.check_output(

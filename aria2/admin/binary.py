@@ -8,7 +8,7 @@ from django.contrib import admin
 
 from ..models import Aria2cInstance, Binary
 from .aria2c_instance import Aria2cInstanceMixin
-from .profile import Aria2cProfile
+from .profile import Profile
 from .utils import ReadOnlyAdminMixin
 
 logger = logging.getLogger(__name__)
@@ -46,15 +46,15 @@ class Aria2cProfileInline(admin.TabularInline):
     """
 
     fields = ("name", "args")
-    model = Aria2cProfile
+    model = Profile
     readonly_fields = ("args",)
 
     @admin.display()
-    def args(self, obj: Aria2cProfile) -> str:
+    def args(self, obj: Profile) -> str:
         """
 
         :param obj:
-        :type obj: Aria2cProfile
+        :type obj: Profile
         :return:
         :rtype: str
         """
